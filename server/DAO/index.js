@@ -1,6 +1,6 @@
 'use strict';
 
-const DAO = require('DAO');
+const DAO = require('./DAO');
 
 module.exports = {
   DAO

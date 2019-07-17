@@ -8,7 +8,8 @@ const MongoClient = require('mongodb').MongoClient;
  * @constructor
  */
 function DAO(config) {
-  const {host, port, dbName} = config;
+  const { host, port, dbName } = config;
+
   this.host = host;
   this.port = port;
   this.dbName = dbName;
@@ -18,7 +19,8 @@ function DAO(config) {
  * Open connection
  * @param {Function} callback
  */
-DAO.prototype.connect = (callback) => {
+DAO.prototype.connect = function(callback) {
+
   const client = new MongoClient(`mongodb://${this.host}:${this.port}/${this.dbName}`, {useNewUrlParser: true});
 
   client.connect((error, db) => {
@@ -38,7 +40,7 @@ DAO.prototype.connect = (callback) => {
  * @param {Array} data.dataList - list of data
  * @param {Function} callback - indicator of successful init data
  */
-DAO.prototype.init = (data, callback) => {
+DAO.prototype.init = function(data, callback) {
   if (!this.dbConnection) {
     throw new Error('Initial data was failed! Connection not found! Please check the connection!');
   }
@@ -52,7 +54,7 @@ DAO.prototype.init = (data, callback) => {
 /**
  * Close connection
  */
-DAO.prototype.close = () => {
+DAO.prototype.close = function() {
   if (!this.dbConnection) {
     throw new Error('Closing of connection was failed! Connection not found! Please check the connection!');
   }
