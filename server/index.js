@@ -2,16 +2,16 @@
 
 const { DAO } = require('./DAO');
 const config = require('./constants');
-const data = require('../data');
+const {links} = require('../data');
 
 const dao = new DAO(config);
 
 dao.connect(() => {
   const initData = {
     tableName: 'links',
-    dataList: data
+    dataList: links
   };
-  dao.init(initData, dao.close);
+  dao.init(initData, dao.close.bind(dao));
 });
 
 

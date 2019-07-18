@@ -7,63 +7,63 @@ const MongoClient = require('mongodb').MongoClient;
  * @param {Object} config - Configuration for connection
  * @constructor
  */
-function DAO(config) {
-  const { host, port, dbName } = config;
+class DAO {
+  constructor(config) {
+    const {host, port, dbName} = config;
 
-  this.host = host;
-  this.port = port;
-  this.dbName = dbName;
-}
+    this.host = host;
+    this.port = port;
+    this.dbName = dbName;
+  }
 
-/**
- * Open connection
- * @param {Function} callback
- */
-DAO.prototype.connect = function(callback) {
+  /**
+   * Open connection
+   * @param {Function} callback
+   */
+  connect(callback) {
+    const client = new MongoClient(`mongodb://${this.host}:${this.port}`, {useNewUrlParser: true});
 
-  const client = new MongoClient(`mongodb://${this.host}:${this.port}/${this.dbName}`, {useNewUrlParser: true});
+    client.connect((error, client) => {
+      if (error) {
+        throw new Error(error);
+      }
+      this.dbConnection = client;
+      this.db = client.db(this.dbName);
+      console.info('\x1b[32m', "\nConnected successfully to server"); // eslint-disable-line no-console
+      callback && callback();
+    });
+  }
 
-  client.connect((error, db) => {
-    if (error) {
-      throw new Error(error);
+  /**
+   * Init of data
+   * @param {Object} data
+   * @param {String} data.tableName - name of table
+   * @param {Array} data.dataList - array list of data
+   * @param {Function} callback - indicator of successful init data
+   */
+  init(data, callback) {
+    if (!this.dbConnection) {
+      throw new Error('\nInitial data was failed! Connection not found! Please check the connection!');
     }
-    this.dbConnection = db;
-    console.info("Connected successfully to server"); // eslint-disable-line no-console
+    const {tableName, dataList} = data;
+    this.db.collection(tableName).insertMany(dataList);
     callback && callback();
-  });
-};
-
-/**
- * Init of data
- * @param {Object} data
- * @param {String} data.tableName - name of table
- * @param {Array} data.dataList - list of data
- * @param {Function} callback - indicator of successful init data
- */
-DAO.prototype.init = function(data, callback) {
-  if (!this.dbConnection) {
-    throw new Error('Initial data was failed! Connection not found! Please check the connection!');
   }
 
-  const {tableName, dataList} = data;
-
-  this.dbConnection.collection(tableName).insertMany(dataList);
-  callback && callback();
-};
-
-/**
- * Close connection
- */
-DAO.prototype.close = function() {
-  if (!this.dbConnection) {
-    throw new Error('Closing of connection was failed! Connection not found! Please check the connection!');
-  }
-  this.dbConnection.close((error) => {
-    if (error) {
-      throw new Error(error);
+  /**
+   * Close connection
+   */
+  close() {
+    if (!this.dbConnection) {
+      throw new Error('\nClosing of connection was failed! Connection not found! Please check the connection!');
     }
-    console.info('Connection have been closed'); // eslint-disable-line no-console
-  });
-};
+    this.dbConnection.close((error) => {
+      if (error) {
+        throw new Error(error);
+      }
+      console.info('\x1b[36m', '\nConnection have been closed!'); // eslint-disable-line no-console
+    });
+  }
+}
 
 module.exports = DAO;
