@@ -14,6 +14,7 @@
     "mongoDB"
   ],
   "dependencies": {
+    "flow-typed": "^2.6.0",
     "koa": "^2.7.0",
     "mongodb": "^3.2.7"
   },

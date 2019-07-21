@@ -1,8 +1,9 @@
 'use strict';
+// @flow
 
 const { DAO } = require('./DAO');
+const { links } = require('./data');
 const config = require('./constants');
-const {links} = require('../data');
 
 const dao = new DAO(config);
 
