@@ -1,6 +1,18 @@
 'use strict';
+// @flow
 
 const MongoClient = require('mongodb').MongoClient;
+
+type Config = {
+  host: string,
+  port: string,
+  dbName: string
+};
+
+type Data = {
+  tableName: string,
+  dataList: Array<Object>
+}
 
 /**
  * Data Access Object
@@ -8,7 +20,13 @@ const MongoClient = require('mongodb').MongoClient;
  * @constructor
  */
 class DAO {
-  constructor(config) {
+  host: string;
+  port: string;
+  dbName: string;
+  dbConnection: Object;
+  db: Object;
+
+  constructor(config: Config) {
     const {host, port, dbName} = config;
 
     this.host = host;
@@ -20,7 +38,7 @@ class DAO {
    * Open connection
    * @param {Function} callback
    */
-  connect(callback) {
+  connect(callback: Function) {
     const client = new MongoClient(`mongodb://${this.host}:${this.port}`, {useNewUrlParser: true});
 
     client.connect((error, client) => {
@@ -41,7 +59,7 @@ class DAO {
    * @param {Array} data.dataList - array list of data
    * @param {Function} callback - indicator of successful init data
    */
-  init(data, callback) {
+  init(data: Data, callback: Function) {
     if (!this.dbConnection) {
       throw new Error('\nInitial data was failed! Connection not found! Please check the connection!');
     }
