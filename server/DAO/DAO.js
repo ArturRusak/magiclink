@@ -1,9 +1,9 @@
 'use strict';
-// @flow
 
+const link = require('./Links');
 const MongoClient = require('mongodb').MongoClient;
 
-type Config = {
+/*type Config = {
   host: string,
   port: string,
   dbName: string
@@ -12,7 +12,7 @@ type Config = {
 type Data = {
   tableName: string,
   dataList: Array<Object>
-}
+}*/
 
 /**
  * Data Access Object
@@ -20,13 +20,15 @@ type Data = {
  * @constructor
  */
 class DAO {
+/*
   host: string;
   port: string;
   dbName: string;
   dbConnection: Object;
   db: Object;
+*/
 
-  constructor(config: Config) {
+  constructor(config) {
     const {host, port, dbName} = config;
 
     this.host = host;
@@ -38,7 +40,7 @@ class DAO {
    * Open connection
    * @param {Function} callback
    */
-  connect(callback: Function) {
+  connect(callback) {
     const client = new MongoClient(`mongodb://${this.host}:${this.port}`, {useNewUrlParser: true});
 
     client.connect((error, client) => {
@@ -47,6 +49,9 @@ class DAO {
       }
       this.dbConnection = client;
       this.db = client.db(this.dbName);
+      link.setConnection(this.db);
+      link.getAllLinks();
+      console.log('111111111111111111111');
       console.info('\x1b[32m', "\nConnected successfully to server"); // eslint-disable-line no-console
       callback && callback();
     });
@@ -59,7 +64,7 @@ class DAO {
    * @param {Array} data.dataList - array list of data
    * @param {Function} callback - indicator of successful init data
    */
-  init(data: Data, callback: Function) {
+  init(data, callback) {
     if (!this.dbConnection) {
       throw new Error('\nInitial data was failed! Connection not found! Please check the connection!');
     }
