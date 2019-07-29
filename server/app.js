@@ -19,7 +19,7 @@ dao.connect(() => {
     tableName: 'links',
     dataList: links
   };
-  /*dao.init(initData, () => {console.log('d SUCCESS');});*/
+  /*dao.init(initData, () => {console.log('SUCCESS');});*/
 });
 
 app.listen(3000, () => {

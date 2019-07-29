@@ -21,6 +21,40 @@ class LinksModel extends BaseModel {
       });
     });
   }
+
+  /**
+   *
+   * @param {String} id
+   * @returns {Promise<any>}
+   */
+  getLinkById(id) {
+    const { db, collectionName } = this;
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName).findOne({id}, (error, result) => {
+        if (error) {
+          reject(error)
+        }
+        resolve(result);
+      });
+    });
+  }
+
+  /**
+   *
+   * @param {Object} newLink
+   * @returns {Promise<any>}
+   */
+  addLink(newLink) {
+    const {db, collectionName} = this;
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName).insertOne(newLink, (error, result) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(result);
+      })
+    });
+  }
 }
 
 module.exports = new LinksModel();
