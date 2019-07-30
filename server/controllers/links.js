@@ -1,4 +1,4 @@
-const {linksModel} = require('../DAO');
+const { linksModel } = require("../DAO");
 
 /**
  *

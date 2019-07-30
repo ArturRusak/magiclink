@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const DAO = require('./DAO');
-const linksModel = require('./linksModel');
+const DAO = require("./DAO");
+const linksModel = require("./linksModel");
 
 module.exports = {
   DAO,

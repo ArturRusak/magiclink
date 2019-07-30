@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const link = require('./linksModel');
-const MongoClient = require('mongodb').MongoClient;
+const link = require("./linksModel");
+const MongoClient = require("mongodb").MongoClient;
 
 /*type Config = {
   host: string,
@@ -20,7 +20,7 @@ type Data = {
  * @constructor
  */
 class DAO {
-/*
+  /*
   host: string;
   port: string;
   dbName: string;
@@ -29,7 +29,7 @@ class DAO {
 */
 
   constructor(config) {
-    const {host, port, dbName} = config;
+    const { host, port, dbName } = config;
 
     this.host = host;
     this.port = port;
@@ -41,7 +41,9 @@ class DAO {
    * @param {Function} callback
    */
   connect(callback) {
-    const client = new MongoClient(`mongodb://${this.host}:${this.port}`, {useNewUrlParser: true});
+    const client = new MongoClient(`mongodb://${this.host}:${this.port}`, {
+      useNewUrlParser: true
+    });
 
     client.connect((error, client) => {
       if (error) {
@@ -50,7 +52,7 @@ class DAO {
       this.dbConnection = client;
       this.db = client.db(this.dbName);
       link.setConnection(this.db);
-      console.info('\x1b[32m', "\nConnected successfully to server"); // eslint-disable-line no-console
+      console.info("\x1b[32m", "\nConnected successfully to server"); // eslint-disable-line no-console
       callback && callback();
     });
   }
@@ -64,9 +66,11 @@ class DAO {
    */
   init(data, callback) {
     if (!this.dbConnection) {
-      throw new Error('\nInitial data was failed! Connection not found! Please check the connection!');
+      throw new Error(
+        "\nInitial data was failed! Connection not found! Please check the connection!"
+      );
     }
-    const {tableName, dataList} = data;
+    const { tableName, dataList } = data;
     this.db.collection(tableName).insertMany(dataList);
     callback && callback();
   }
@@ -76,13 +80,15 @@ class DAO {
    */
   close() {
     if (!this.dbConnection) {
-      throw new Error('\nClosing of connection was failed! Connection not found! Please check the connection!');
+      throw new Error(
+        "\nClosing of connection was failed! Connection not found! Please check the connection!"
+      );
     }
-    this.dbConnection.close((error) => {
+    this.dbConnection.close(error => {
       if (error) {
         throw new Error(error);
       }
-      console.info('\x1b[36m', '\nConnection have been closed!'); // eslint-disable-line no-console
+      console.info("\x1b[36m", "\nConnection have been closed!"); // eslint-disable-line no-console
     });
   }
 }

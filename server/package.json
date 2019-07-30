@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "flow": "flow"
+    "flow": "flow",
+    "lint": "eslint ../server",
+    "pretty": "prettier --write \"./**/*.{js,jsx,json}\""
   },
   "keywords": [
     "nodeJs",
@@ -30,7 +32,8 @@
     "eslint": "^5.3.0",
     "eslint-config-airbnb": "^17.1.1",
     "eslint-plugin-import": "^2.18.0",
-    "flow-bin": "^0.103.0"
+    "flow-bin": "^0.103.0",
+    "prettier": "1.18.2"
   },
   "author": "Artur Rusak",
   "license": "MIT"
