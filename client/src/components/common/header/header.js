@@ -1,11 +1,11 @@
 import React from "react";
 import { styled } from "baseui";
+import { commonContent } from "../../../constants";
 
 const Header = styled("header", ({ $theme }) => ({
   minHeight: "4em",
   padding: "1em 1.5em",
-  color: $theme.colors.primary,
-  background: $theme.colors.primary50
+  background: $theme.colors.primary700
 }));
 
 const HeaderContainer = styled("div", () => ({
@@ -22,11 +22,11 @@ const HeaderLink = styled("a", ({ $theme }) => ({
   display: "flex",
   alignItems: "center",
   fontSize: "2em",
-  color: $theme.colors.primary,
+  color: $theme.colors.primary100,
   textDecoration: "none",
   transition: "0.3s",
   ":hover": {
-    color: $theme.colors.primary700
+    color: $theme.colors.primary200
   }
 }));
 
@@ -41,7 +41,7 @@ export default function() {
         <HeaderLink href="#">
           <i className="fa fa-link fa-2x" aria-hidden="true"></i>
           <HeaderLinkSpan>
-            Magik link
+            {commonContent.NAME_PROJECT}
           </HeaderLinkSpan>
         </HeaderLink>
       </HeaderContainer>

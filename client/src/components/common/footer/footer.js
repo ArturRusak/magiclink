@@ -1,12 +1,11 @@
 import React from "react";
 import { styled } from "baseui";
-import { StyledLink } from "baseui/link";
+import { commonContent } from "../../../constants";
 
 const Footer = styled("footer", ({ $theme }) => ({
   minHeight: "4em",
   padding: "1em 1.5em",
-  color: $theme.colors.primary,
-  background: $theme.colors.primary50
+  background: $theme.colors.primary700
 }));
 
 const FooterContainer = styled("div", () => ({
@@ -23,11 +22,11 @@ const FooterLink = styled("a", ({ $theme }) => ({
   display: "flex",
   alignItems: "center",
   fontSize: "1em",
-  color: $theme.colors.primary,
+  color: $theme.colors.primary100,
   textDecoration: "none",
   transition: "0.3s",
   ":hover": {
-    color: $theme.colors.primary700
+    color: $theme.colors.primary200
   }
 }));
 
@@ -36,18 +35,19 @@ const FooterLinkSpan = styled("span", () => ({
 }));
 
 export default function() {
+  const { DEVELOPER, NAME_PROJECT } = commonContent;
   return (
     <Footer>
       <FooterContainer>
         <FooterLink href="#">
           <i className="fa fa-link fa-2x" aria-hidden="true"></i>
           <FooterLinkSpan>
-            Magik link
+            {NAME_PROJECT}
           </FooterLinkSpan>
         </FooterLink>
-        <StyledLink href={"https://www.facebook.com/artur.rusak.5"} target={"_blank"}>
-          Developed by Artur Rusak
-        </StyledLink>
+        <FooterLink href={DEVELOPER.LINK} target={"_blank"}>
+          {DEVELOPER.TTITLE}
+        </FooterLink>
       </FooterContainer>
     </Footer>
   );
