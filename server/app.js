@@ -13,7 +13,7 @@ const dao = new DAO(config);
 const app = new Koa();
 
 // eslint-disable-next-line no-undef
-app.use(serve(path.join(__dirname, "../public")));
+app.use(serve(path.join(__dirname, "../client/build")));
 app.use(bodyParser());
 app.use(indexRoute.routes());
 app.use(linkRoutes.routes());
