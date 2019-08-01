@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import { styled } from "baseui";
-import { Header, Footer } from "./components";
+import { Header, Footer, LinksList, ContentBody } from "./components";
 
 const App = styled("div", () => ({
   display: "flex",
@@ -14,6 +14,9 @@ export default function() {
   return (
     <App className="App">
       <Header/>
+      <ContentBody>
+        <LinksList/>
+      </ContentBody>
       <Footer/>
     </App>
   );
