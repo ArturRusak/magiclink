@@ -40,7 +40,7 @@ export default function() {
     <Footer>
       <FooterContainer>
         <FooterLink href="#">
-          <i className="fa fa-link fa-2x" aria-hidden="true"></i>
+          <i className="fa fa-link fa-2x" aria-hidden="true"/>
           <FooterLinkSpan>
             {NAME_PROJECT}
           </FooterLinkSpan>
