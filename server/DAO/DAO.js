@@ -60,8 +60,8 @@ class DAO {
   /**
    * Init of data
    * @param {Object} data
-   * @param {String} data.collectionName - name of table
-   * @param {Array} data.dataList - array list of data
+   * @param {String}collectionName - name of table
+   * @param {Array} dataList - array list of data
    * @param {Function} callback - indicator of successful init data
    */
   init({ collectionName, dataList }, callback) {
@@ -83,6 +83,7 @@ class DAO {
   /**
    * Clear of data
    * @param {String} collectionName - name of collection
+   * @param {Array} dataList - list of links
    * @param {Function} callback - indicator of successful init data
    */
   clear({ collectionName, dataList }, callback) {
