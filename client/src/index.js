@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import { BrowserRouter } from "react-router-dom";
 import { Provider as StyletronProvider } from "styletron-react";
 import { Client as Styletron } from "styletron-engine-atomic";
 import { LightTheme, BaseProvider } from "baseui";
@@ -13,7 +14,9 @@ ReactDOM.render(
   // eslint-disable-next-line no-undef
   <StyletronProvider value={engine} debugAfterHydration>
     <BaseProvider theme={LightTheme}>
-      <App/>
+      <BrowserRouter>
+        <App/>
+      </BrowserRouter>
     </BaseProvider>
   </StyletronProvider>
   , document.getElementById("root"));
