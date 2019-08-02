@@ -25,11 +25,12 @@ app.use(indexRoute.routes());
 app.use(linkRoutes.routes());
 
 dao.connect(() => {
-  /*const initData = {
-    tableName: 'links',
+  const initData = {
+    collectionName: "links",
     dataList: links
   };
-  dao.init(initData, () => {console.log('SUCCESS');});*/
+  // eslint-disable-next-line no-console
+  dao.clear(initData, dao.init.bind(dao));
 });
 
 app.listen(3001, () => {
