@@ -12,6 +12,12 @@ const config = require("./constants");
 const dao = new DAO(config);
 const app = new Koa();
 
+app.use(async (ctx, next) => {
+  ctx.set("Access-Control-Allow-Origin", "*");
+  ctx.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  await next();
+});
+
 // eslint-disable-next-line no-undef
 app.use(serve(path.join(__dirname, "../client/build")));
 app.use(bodyParser());
@@ -26,6 +32,6 @@ dao.connect(() => {
   dao.init(initData, () => {console.log('SUCCESS');});*/
 });
 
-app.listen(3000, () => {
-  console.log(`Server listening on port: 3000`); // eslint-disable-line no-console
+app.listen(3001, () => {
+  console.log(`Server listening on port: 3001`); // eslint-disable-line no-console
 });
