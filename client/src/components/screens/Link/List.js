@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useInput } from "../../utils/hooks";
+import { useInput } from "../../../utils/hooks";
+import { listContent, settingsAPI } from "../../../constants";
 import { Table } from "baseui/table";
 import { Block } from "baseui/block";
 import { Button } from "baseui/button";
@@ -7,47 +8,48 @@ import { Input, SIZE } from "baseui/input";
 
 function List() {
 
-  const API = "http://localhost:3001/";
   const [listLinks, setListLinks] = useState([]);
   const [status, setStatus] = useState("");
 
   const { value, reset, onChange } = useInput("");
 
-  const request = new Request(`${API}links`);
-  const titles = ["_id", "id", "link", "hash"];
 
   function handleSubmit(e) {
     e.preventDefault();
-    alert(`Submitting Name ${value}`);
-
-    fetch("http://localhost:3001/links", {
+    fetch(`${settingsAPI.API}/links`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
+      headers: settingsAPI.headers,
       body: JSON.stringify({
         id: "test",
         hash: "hash",
-        link: "link"
+        link: value
       })
     })
       .then(response => response.json())
-      .then(data => {
-        setStatus(status);
+      .then(({ data, status }) => {
+        if (typeof data !== "string") {
+          setStatus(status);
+          setListLinks([...listLinks, data]);
+        } else {
+          setStatus(data);
+        }
+        reset();
+      })
+      .catch(error => {
+        setStatus(`${error}`);
       });
 
   }
 
   useEffect(() => {
-    fetch(request)
+    fetch(`${settingsAPI.API}/links`)
       .then(response => response.json())
-      .then(data => {
+      .then(({ data, status }) => {
         setStatus(status);
-        setListLinks(data.data);
+        setListLinks(data);
       })
-      .catch(error => {
-        setStatus(error);
+      .catch((error) => {
+        setStatus(`${error}`);
         setListLinks([]);
       });
   }, []);
@@ -57,7 +59,7 @@ function List() {
       <h1>Magic Links</h1>
       <Block
         display={"flex"}
-        maxWidth={"30em"}
+        maxWidth={"35em"}
         padding={"0.3em"}
         margin={"1.5em auto"}
         backgroundColor={"#dadada"}
@@ -68,10 +70,15 @@ function List() {
           placeholder="Input link"
           value={value}
         />
-        <Button onClick={(e) => handleSubmit(e)} type={"submit"}>Primary</Button>
+        <Button onClick={(e) => handleSubmit(e)} type={"submit"}>Save</Button>
+      </Block>
+      <Block>
+        <span>
+          {status}
+        </span>
       </Block>
       <Block margin={"1.5em 0"}>
-        <Table columns={titles} data={listLinks.map((item) => Object.values(item))}/>
+        <Table columns={listContent.tableTitles} data={listLinks.map((item, i) => [i + 1, item.hash, item.link])}/>
       </Block>
     </React.Fragment>
   );

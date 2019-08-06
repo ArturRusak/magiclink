@@ -26,7 +26,7 @@ dao.connect(() => {
     dataList: links
   };
   // eslint-disable-next-line no-console
-  dao.clear(initData, dao.init.bind(dao));
+  /*dao.clear(initData, dao.init.bind(dao));*/
 });
 
 app.listen(3001, () => {
