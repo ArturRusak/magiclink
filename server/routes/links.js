@@ -1,7 +1,7 @@
 "use strict";
 
 const Router = require("koa-router");
-const { getLinks, getLinkById, addLink } = require("../controllers").links;
+const { getLinks, getLinkByParam, addLink } = require("../controllers").links;
 
 const router = new Router();
 
@@ -22,7 +22,7 @@ router
       });
   })
   .get("/links/:id", async ctx => {
-    await getLinkById(ctx.params.id)
+    await getLinkByParam({ id: ctx.params.id })
       .then(link => {
         ctx.body = {
           status: "success",
@@ -38,10 +38,10 @@ router
   })
   .post("/links", async ctx => {
     await addLink(ctx.request.body)
-      .then(() => {
+      .then((item) => {
         ctx.body = {
           status: "success",
-          data: ctx.request.body
+          data: item
         };
       })
       .catch(error => {
