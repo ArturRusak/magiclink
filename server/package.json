@@ -16,6 +16,7 @@
     "mongoDB"
   ],
   "dependencies": {
+    "@koa/cors": "^2.2.3",
     "flow-typed": "^2.6.0",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
