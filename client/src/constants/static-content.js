@@ -5,3 +5,17 @@ export const commonContent = {
     TTITLE: "Developed by Artur Rusak"
   }
 };
+
+export const settingsAPI = {
+  API: "http://localhost:3001",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  }
+
+};
+
+export const listContent = {
+  tableTitles: ["N", "hash", "link"]
+
+};
