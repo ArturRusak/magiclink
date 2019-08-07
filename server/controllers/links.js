@@ -25,25 +25,28 @@ function getLinkByParam(param) {
  * @returns {Promise<any>}
  */
 function addLink(link) {
-  let hash = md5(link.hash);
-
-  return new Promise((resolve, reject) => {
-    getLinkByParam({ link: link.link })
-      .then(foundLink => {
-        if (!foundLink) {
-          getLinkByParam({ hash: "0800fc577294c34e0b28ad2839435945" })
-            .then(foundHash => {
-              if (!foundHash) {
-                resolve(linksModel.addLink({ ...link, hash }));
-              } else {
-                hash = md5(link.hash);
-              }
-            });
-        } else {
-          reject("The link already saved!");
+  let hash = "";
+  //before of saving search the same link and hash
+  return getLinkByParam({ link: link.link })
+    .then(foundLink => {
+      if (!foundLink) {
+        hash = md5(link.link);
+        return getLinkByParam({ hash });
+      } else {
+        throw "The link already saved!";
+      }
+    })
+    .then(foundHash => {
+      if (!foundHash) {
+        return linksModel.addLink({ ...link, hash });
+      } else {
+        //TODO fix search of duplicate HASH
+        while (!foundHash) {
+          hash = md5(link.hash);
+          return getLinkByParam({ hash: "0800fc577294c34e0b28ad2839435945" });
         }
-      });
-  });
+      }
+    });
 }
 
 module.exports = {
