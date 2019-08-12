@@ -1,10 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { useInput } from "../../../utils/hooks";
 import { listContent, settingsAPI } from "../../../constants";
-import { Table } from "baseui/table";
+import { withStyle } from "styletron-react";
+
+import {
+  StyledTable,
+  StyledHead,
+  StyledHeadCell,
+  StyledBody,
+  StyledRow,
+  StyledCell
+} from "baseui/table";
 import { Block } from "baseui/block";
 import { Button } from "baseui/button";
 import { Input, SIZE } from "baseui/input";
+
+const CustomRow = withStyle(StyledRow, ({ $theme }) => ({
+
+    ":hover": {
+      background: $theme.colors.primary50,
+      cursor: "pointer"
+    }
+  })
+);
+
+function editLink(e) {
+  console.log(e.currentTarget.dataset.idLink);
+}
 
 function List() {
 
@@ -12,7 +34,7 @@ function List() {
   const [status, setStatus] = useState("");
 
   const { value, reset, onChange } = useInput("");
-
+  const { tableTitles } = listContent;
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -78,7 +100,34 @@ function List() {
         </span>
       </Block>
       <Block margin={"1.5em 0"}>
-        <Table columns={listContent.tableTitles} data={listLinks.map((item, i) => [i + 1, item.hash, item.link])}/>
+        <StyledTable>
+          <StyledHead>
+            {
+              tableTitles.map((title, index) => (
+                <StyledHeadCell key={`${index}-head`}>
+                  {title}
+                </StyledHeadCell>
+              ))
+            }
+          </StyledHead>
+          <StyledBody>
+            {listLinks.map((item, index) => (
+              <CustomRow
+                onClick={(e) => editLink(e)}
+                key={`${index}-row`}
+                data-id-link={item._id}
+              >
+                <StyledCell>{index + 1}</StyledCell>
+                <StyledCell>{item.hash}</StyledCell>
+                <StyledCell>
+                  <a href={item.link}>
+                    {item.link}
+                  </a>
+                </StyledCell>
+              </CustomRow>
+            ))}
+          </StyledBody>
+        </StyledTable>
       </Block>
     </React.Fragment>
   );
