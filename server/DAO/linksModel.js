@@ -1,9 +1,9 @@
-const BaseModel = require('./BaseModel');
+const BaseModel = require("./BaseModel");
 
 class LinksModel extends BaseModel {
   constructor() {
     super();
-    this.collectionName = 'links';
+    this.collectionName = "links";
   }
 
   /**
@@ -13,26 +13,28 @@ class LinksModel extends BaseModel {
   getLinks() {
     const { db, collectionName } = this;
     return new Promise((resolve, reject) => {
-      db.collection(collectionName).find().toArray((error, results) => {
-        if (error) {
-          reject(error)
-        }
-        resolve(results);
-      });
+      db.collection(collectionName)
+        .find()
+        .toArray((error, results) => {
+          if (error) {
+            reject(error);
+          }
+          resolve(results);
+        });
     });
   }
 
   /**
    *
-   * @param {String} id
+   * @param {Object} param
    * @returns {Promise<any>}
    */
-  getLinkById(id) {
+  getLinkByParam(param) {
     const { db, collectionName } = this;
     return new Promise((resolve, reject) => {
-      db.collection(collectionName).findOne({id}, (error, result) => {
+      db.collection(collectionName).findOne(param, (error, result) => {
         if (error) {
-          reject(error)
+          reject(error);
         }
         resolve(result);
       });
@@ -45,14 +47,14 @@ class LinksModel extends BaseModel {
    * @returns {Promise<any>}
    */
   addLink(newLink) {
-    const {db, collectionName} = this;
+    const { db, collectionName } = this;
     return new Promise((resolve, reject) => {
       db.collection(collectionName).insertOne(newLink, (error, result) => {
         if (error) {
           reject(error);
         }
-        resolve(result);
-      })
+        resolve(result.ops[0]);
+      });
     });
   }
 }

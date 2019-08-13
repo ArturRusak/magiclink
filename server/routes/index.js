@@ -1,15 +1,13 @@
-'use strict';
+"use strict";
 
-const linkRoutes = require('./links');
+const linkRoutes = require("./links");
 
-const Router = require('koa-router');
+const Router = require("koa-router");
 const router = new Router();
 
-
-router
-  .get('/', async (ctx, next) => {
-    ctx.body = 'Hello World!';
-  });
+router.get("/", async ctx => {
+  ctx.body = "Hello World!";
+});
 
 module.exports = {
   linkRoutes,
