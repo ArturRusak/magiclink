@@ -1,5 +1,4 @@
 const { linksModel } = require("../DAO");
-const bcrypt = require("bcrypt");
 const md5 = require("md5");
 
 /**

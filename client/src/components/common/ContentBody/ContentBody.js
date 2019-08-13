@@ -1,5 +1,8 @@
 import React from "react";
 import { styled } from "baseui";
+import { Route } from "react-router-dom";
+
+import { Home, LinkInfo, LinksList, Navigation } from "../../index";
 
 const ContentBody = styled("div", () => ({
   flexGrow: "1",
@@ -9,10 +12,13 @@ const ContentBody = styled("div", () => ({
   margin: "0 auto"
 }));
 
-export default function(props) {
+export default function() {
   return (
     <ContentBody>
-      {props.children}
+      <Navigation/>
+      <Route exact path="/" component={Home}/>
+      <Route exact path="/links" component={LinksList}/>
+      <Route path="/links/:linkId" component={LinkInfo}/>
     </ContentBody>
   );
 }

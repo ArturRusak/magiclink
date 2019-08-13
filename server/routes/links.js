@@ -1,6 +1,7 @@
 "use strict";
 
 const Router = require("koa-router");
+const ObjectId = require("mongodb").ObjectId;
 const { getLinks, getLinkByParam, addLink } = require("../controllers").links;
 
 const router = new Router();
@@ -22,7 +23,8 @@ router
       });
   })
   .get("/links/:id", async ctx => {
-    await getLinkByParam({ id: ctx.params.id })
+    const _id = new ObjectId(ctx.params.id);
+    await getLinkByParam({ _id })
       .then(link => {
         ctx.body = {
           status: "success",

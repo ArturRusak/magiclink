@@ -3,6 +3,7 @@ import { useInput } from "../../../utils/hooks";
 import { listContent, settingsAPI } from "../../../constants";
 import { withStyle } from "styletron-react";
 
+import { styled } from "baseui";
 import {
   StyledTable,
   StyledHead,
@@ -14,22 +15,28 @@ import {
 import { Block } from "baseui/block";
 import { Button } from "baseui/button";
 import { Input, SIZE } from "baseui/input";
+import { Link } from "react-router-dom";
 
 const CustomRow = withStyle(StyledRow, ({ $theme }) => ({
+  position: "relative",
+  ":hover": {
+    background: $theme.colors.primary50,
+    cursor: "pointer"
+  }
+}));
 
-    ":hover": {
-      background: $theme.colors.primary50,
-      cursor: "pointer"
-    }
-  })
-);
+const RowLink = styled(Link, {
+  position: "absolute",
+  width: "100%",
+  height: "100%"
+});
 
-function editLink(e) {
-  console.log(e.currentTarget.dataset.idLink);
-}
+const CellLink = styled("a", {
+  zIndex: "1",
+  position: "relative"
+});
 
 function List() {
-
   const [listLinks, setListLinks] = useState([]);
   const [status, setStatus] = useState("");
 
@@ -60,7 +67,6 @@ function List() {
       .catch(error => {
         setStatus(`${error}`);
       });
-
   }
 
   useEffect(() => {
@@ -70,7 +76,7 @@ function List() {
         setStatus(status);
         setListLinks(data);
       })
-      .catch((error) => {
+      .catch(error => {
         setStatus(`${error}`);
         setListLinks([]);
       });
@@ -92,37 +98,28 @@ function List() {
           placeholder="Input link"
           value={value}
         />
-        <Button onClick={(e) => handleSubmit(e)} type={"submit"}>Save</Button>
+        <Button onClick={e => handleSubmit(e)} type={"submit"}>
+          Save
+        </Button>
       </Block>
       <Block>
-        <span>
-          {status}
-        </span>
+        <span>{status}</span>
       </Block>
       <Block margin={"1.5em 0"}>
         <StyledTable>
           <StyledHead>
-            {
-              tableTitles.map((title, index) => (
-                <StyledHeadCell key={`${index}-head`}>
-                  {title}
-                </StyledHeadCell>
-              ))
-            }
+            {tableTitles.map((title, index) => (
+              <StyledHeadCell key={`${index}-head`}>{title}</StyledHeadCell>
+            ))}
           </StyledHead>
           <StyledBody>
             {listLinks.map((item, index) => (
-              <CustomRow
-                onClick={(e) => editLink(e)}
-                key={`${index}-row`}
-                data-id-link={item._id}
-              >
+              <CustomRow key={`${item._id}-row`}>
+                <RowLink className={"link-info"} to={`/links/${item._id}`}/>
                 <StyledCell>{index + 1}</StyledCell>
                 <StyledCell>{item.hash}</StyledCell>
                 <StyledCell>
-                  <a href={item.link}>
-                    {item.link}
-                  </a>
+                  <CellLink href={item.link} title={item.link}>{item.link}</CellLink>
                 </StyledCell>
               </CustomRow>
             ))}

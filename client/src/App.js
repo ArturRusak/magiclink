@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import { styled } from "baseui";
+import { BrowserRouter } from "react-router-dom";
 import { Header, Footer, LinksList, ContentBody } from "./components";
 
 const App = styled("div", () => ({
@@ -12,12 +13,12 @@ const App = styled("div", () => ({
 
 export default function() {
   return (
-    <App className="App">
-      <Header/>
-      <ContentBody>
-        <LinksList/>
-      </ContentBody>
-      <Footer/>
-    </App>
+    <BrowserRouter>
+      <App className="App">
+        <Header/>
+        <ContentBody/>
+        <Footer/>
+      </App>
+    </BrowserRouter>
   );
 }
