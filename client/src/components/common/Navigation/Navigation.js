@@ -31,7 +31,6 @@ export default function Navigation() {
           </LiNav>
         </UlNav>
       </nav>
-
     </React.Fragment>
   );
 }
