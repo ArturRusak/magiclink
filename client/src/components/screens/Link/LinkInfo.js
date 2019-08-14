@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { settingsAPI } from "../../../constants";
+import { Block } from "baseui/block";
 import {
   StyledTable,
   StyledHead,
@@ -32,12 +33,17 @@ export default function LinkInfo({ match }) {
       <StyledHeadCell key={`${index}--head-cell`}>{key}</StyledHeadCell>);
   const bodyCell = () =>
     Object.keys(link).map((key, index) =>
-      <StyledHeadCell key={`${index}--body-cell`}>{link[key]}</StyledHeadCell>);
+      <StyledCell key={`${index}--body-cell`}>{link[key]}</StyledCell>);
 
   return (
-    <div>
-      <h1>Links Info</h1>
-      <StyledTable>
+    <React.Fragment>
+      <Block
+        margin={"1em 0"}
+      >
+        <h1>Links Info</h1>
+      </Block>
+      <Block>
+        <StyledTable>
         <StyledHead>
           {headTitles()}
         </StyledHead>
@@ -47,7 +53,8 @@ export default function LinkInfo({ match }) {
           </StyledRow>
         </StyledBody>
       </StyledTable>
-    </div>
+      </Block>
+    </React.Fragment>
   );
 }
 

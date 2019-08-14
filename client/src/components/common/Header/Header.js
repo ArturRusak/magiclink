@@ -1,6 +1,9 @@
 import React from "react";
 import { styled } from "baseui";
+import { Link } from "react-router-dom";
+
 import { commonContent } from "../../../constants";
+import { Navigation } from "../../index";
 
 const Header = styled("header", ({ $theme }) => ({
   minHeight: "4em",
@@ -18,7 +21,7 @@ const HeaderContainer = styled("div", () => ({
   margin: "0 auto"
 }));
 
-const HeaderLink = styled("a", ({ $theme }) => ({
+const HeaderRouterLink = styled(Link, ({ $theme }) => ({
   display: "flex",
   alignItems: "center",
   fontSize: "2em",
@@ -38,13 +41,12 @@ export default function() {
   return (
     <Header>
       <HeaderContainer>
-        <HeaderLink href="#">
-          <i className="fa fa-link fa-2x" aria-hidden="true"></i>
-          <HeaderLinkSpan>
-            {commonContent.NAME_PROJECT}
-          </HeaderLinkSpan>
-        </HeaderLink>
+        <HeaderRouterLink to="/">
+          <i className="fa fa-link fa-2x" aria-hidden="true"/>
+          <HeaderLinkSpan>{commonContent.NAME_PROJECT}</HeaderLinkSpan>
+        </HeaderRouterLink>
       </HeaderContainer>
+      <Navigation/>
     </Header>
   );
 }

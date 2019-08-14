@@ -15,7 +15,6 @@ const ContentBody = styled("div", () => ({
 export default function() {
   return (
     <ContentBody>
-      <Navigation/>
       <Route exact path="/" component={Home}/>
       <Route exact path="/links" component={LinksList}/>
       <Route path="/links/:linkId" component={LinkInfo}/>
