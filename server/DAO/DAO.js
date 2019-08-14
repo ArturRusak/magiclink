@@ -10,7 +10,7 @@ const MongoClient = require("mongodb").MongoClient;
 };
 
 type Data = {
-  tableName: string,
+  collectionName: string,
   dataList: Array<Object>
 }*/
 
@@ -60,20 +60,48 @@ class DAO {
   /**
    * Init of data
    * @param {Object} data
-   * @param {String} data.tableName - name of table
-   * @param {Array} data.dataList - array list of data
+   * @param {String}collectionName - name of table
+   * @param {Array} dataList - array list of data
    * @param {Function} callback - indicator of successful init data
    */
-  init(data, callback) {
+  init({ collectionName, dataList }, callback) {
     if (!this.dbConnection) {
       throw new Error(
         "\nInitial data was failed! Connection not found! Please check the connection!"
       );
     }
-    const { tableName, dataList } = data;
-    this.db.collection(tableName).insertMany(dataList);
-    callback && callback();
+    this.db.collection(collectionName).insertMany(dataList, (error) => {
+      if (error) {
+        throw new Error(
+          "\nError of initial insert data!"
+        );
+      }
+      callback && callback();
+    });
   }
+
+  /**
+   * Clear of data
+   * @param {String} collectionName - name of collection
+   * @param {Array} dataList - list of links
+   * @param {Function} callback - indicator of successful init data
+   */
+  clear({ collectionName, dataList }, callback) {
+    if (!this.dbConnection) {
+      throw new Error(
+        "\nInitial data was failed! Connection not found! Please check the connection!"
+      );
+    }
+    this.db.collection(collectionName).deleteMany({}, (error) => {
+      if (error) {
+        throw new Error(
+          "\nDrop collection error!", error
+        );
+      }
+      callback && callback({ collectionName, dataList }, () => console.log("SUCCESS"));
+    });
+  }
+
 
   /**
    * Close connection
