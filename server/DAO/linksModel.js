@@ -26,13 +26,13 @@ class LinksModel extends BaseModel {
 
   /**
    *
-   * @param {String} id
+   * @param {Object} param
    * @returns {Promise<any>}
    */
-  getLinkById(id) {
+  getLinkByParam(param) {
     const { db, collectionName } = this;
     return new Promise((resolve, reject) => {
-      db.collection(collectionName).findOne({ id }, (error, result) => {
+      db.collection(collectionName).findOne(param, (error, result) => {
         if (error) {
           reject(error);
         }
@@ -53,7 +53,7 @@ class LinksModel extends BaseModel {
         if (error) {
           reject(error);
         }
-        resolve(result);
+        resolve(result.ops[0]);
       });
     });
   }
