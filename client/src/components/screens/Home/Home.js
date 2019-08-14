@@ -1,9 +1,17 @@
 import React from "react";
+import { Block } from "baseui/block";
 
 export default function LinkInfo() {
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
+    <React.Fragment>
+      <Block>
+        <h1>Home</h1>
+      </Block>
+      <Block
+        margin={"1em 0"}
+      >
+        <span>About project</span>
+      </Block>
+    </React.Fragment>
   );
 }

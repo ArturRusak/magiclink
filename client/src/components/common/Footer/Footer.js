@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "baseui";
+import { Link } from "react-router-dom";
 import { commonContent } from "../../../constants";
 
 const Footer = styled("footer", ({ $theme }) => ({
@@ -16,6 +17,18 @@ const FooterContainer = styled("div", () => ({
   width: "100%",
   maxWidth: "1280px",
   margin: "0 auto"
+}));
+
+const FooterRouterLink = styled(Link, ({ $theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  fontSize: "1em",
+  color: $theme.colors.primary100,
+  textDecoration: "none",
+  transition: "0.3s",
+  ":hover": {
+    color: $theme.colors.primary200
+  }
 }));
 
 const FooterLink = styled("a", ({ $theme }) => ({
@@ -39,12 +52,10 @@ export default function() {
   return (
     <Footer>
       <FooterContainer>
-        <FooterLink href="#">
+        <FooterRouterLink to="/">
           <i className="fa fa-link fa-2x" aria-hidden="true"/>
-          <FooterLinkSpan>
-            {NAME_PROJECT}
-          </FooterLinkSpan>
-        </FooterLink>
+          <FooterLinkSpan>{NAME_PROJECT}</FooterLinkSpan>
+        </FooterRouterLink>
         <FooterLink href={DEVELOPER.LINK} target={"_blank"}>
           {DEVELOPER.TTITLE}
         </FooterLink>

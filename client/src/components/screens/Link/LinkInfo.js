@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { settingsAPI } from "../../../constants";
+import { Block } from "baseui/block";
+import {
+  StyledTable,
+  StyledHead,
+  StyledHeadCell,
+  StyledBody,
+  StyledRow,
+  StyledCell
+} from "baseui/table";
 
 export default function LinkInfo({ match }) {
   const linkID = match.params.linkId;
@@ -19,14 +28,33 @@ export default function LinkInfo({ match }) {
       });
   }, []);
 
+  const headTitles = () =>
+    Object.keys(link).map((key, index) =>
+      <StyledHeadCell key={`${index}--head-cell`}>{key}</StyledHeadCell>);
+  const bodyCell = () =>
+    Object.keys(link).map((key, index) =>
+      <StyledCell key={`${index}--body-cell`}>{link[key]}</StyledCell>);
+
   return (
-    <div>
-      <h1>Links Info</h1>
-      <h3>ID: {linkID}</h3>
-      {
-        link.link
-      }
-    </div>
+    <React.Fragment>
+      <Block
+        margin={"1em 0"}
+      >
+        <h1>Links Info</h1>
+      </Block>
+      <Block>
+        <StyledTable>
+        <StyledHead>
+          {headTitles()}
+        </StyledHead>
+        <StyledBody>
+          <StyledRow>
+            {bodyCell()}
+          </StyledRow>
+        </StyledBody>
+      </StyledTable>
+      </Block>
+    </React.Fragment>
   );
 }
 
