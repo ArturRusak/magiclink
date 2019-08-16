@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useInput } from "../../../utils/hooks";
 import { listContent, settingsAPI } from "../../../constants";
 import { withStyle } from "styletron-react";
+import { InfoMessage } from "../../index";
 
 import { styled } from "baseui";
 import {
@@ -39,6 +40,7 @@ const CellLink = styled("a", {
 function List() {
   const [listLinks, setListLinks] = useState([]);
   const [status, setStatus] = useState("");
+  const [isReqError, setIsReqError] = useState(false);
 
   const { value, reset, onChange } = useInput("");
   const { tableTitles } = listContent;
@@ -58,13 +60,16 @@ function List() {
       .then(({ data, status }) => {
         if (typeof data !== "string") {
           setStatus(status);
+          setIsReqError(true);
           setListLinks([...listLinks, data]);
         } else {
+          setIsReqError(false);
           setStatus(data);
+          reset();
         }
-        reset();
       })
       .catch(error => {
+        setIsReqError(true);
         setStatus(`${error}`);
       });
   }
@@ -73,10 +78,12 @@ function List() {
     fetch(`${settingsAPI.API}/links`)
       .then(response => response.json())
       .then(({ data, status }) => {
+        setIsReqError(false);
         setStatus(status);
         setListLinks(data);
       })
       .catch(error => {
+        setIsReqError(true);
         setStatus(`${error}`);
         setListLinks([]);
       });
@@ -103,7 +110,10 @@ function List() {
         </Button>
       </Block>
       <Block>
-        <span>{status}</span>
+        <InfoMessage
+          message={status}
+          isError={isReqError}
+        />
       </Block>
       <Block margin={"1.5em 0"}>
         <StyledTable>
@@ -119,7 +129,9 @@ function List() {
                 <StyledCell>{index + 1}</StyledCell>
                 <StyledCell>{item.hash}</StyledCell>
                 <StyledCell>
-                  <CellLink href={item.link} title={item.link}>{item.link}</CellLink>
+                  <CellLink href={item.link} title={item.link}>
+                    {item.link}
+                  </CellLink>
                 </StyledCell>
               </CustomRow>
             ))}
