@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useInput } from "../../../utils/hooks";
-import { listContent, settingsAPI } from "../../../constants";
+import { Toast, KIND } from "baseui/toast";
 import { withStyle } from "styletron-react";
+
+import { listContent, settingsAPI } from "../../../constants";
 
 import { styled } from "baseui";
 import {
@@ -39,6 +41,7 @@ const CellLink = styled("a", {
 function List() {
   const [listLinks, setListLinks] = useState([]);
   const [status, setStatus] = useState("");
+  const [isReqError, setIsReqError] = useState(false);
 
   const { value, reset, onChange } = useInput("");
   const { tableTitles } = listContent;
@@ -57,15 +60,18 @@ function List() {
       .then(response => response.json())
       .then(({ data, status }) => {
         if (typeof data !== "string") {
-          setStatus(status);
+          setStatus("Success");
+          setIsReqError(false);
           setListLinks([...listLinks, data]);
+          reset();
         } else {
-          setStatus(data);
+          setIsReqError(true);
+          setStatus(`Error: ${data}`);
         }
-        reset();
       })
       .catch(error => {
-        setStatus(`${error}`);
+        setIsReqError(true);
+        setStatus(`Error: ${error}`);
       });
   }
 
@@ -73,15 +79,17 @@ function List() {
     fetch(`${settingsAPI.API}/links`)
       .then(response => response.json())
       .then(({ data, status }) => {
-        setStatus(status);
+        setIsReqError(false);
+        setStatus("Success");
         setListLinks(data);
       })
       .catch(error => {
-        setStatus(`${error}`);
+        setIsReqError(true);
+        setStatus(`Error: ${error}`);
         setListLinks([]);
       });
   }, []);
-
+  // TODO improve of notifications
   return (
     <React.Fragment>
       <h1>Magic Links</h1>
@@ -103,7 +111,22 @@ function List() {
         </Button>
       </Block>
       <Block>
-        <span>{status}</span>
+        <Toast
+          autoHideDuration={3000}
+          key={status}
+          kind={isReqError ? KIND.warning : KIND.positive}
+          overrides={{
+            Body: {
+              style: {
+                position: "fixed",
+                bottom: "2em",
+                right: "2em"
+              }
+            }
+          }}
+        >
+          {status}
+        </Toast>
       </Block>
       <Block margin={"1.5em 0"}>
         <StyledTable>
@@ -119,7 +142,9 @@ function List() {
                 <StyledCell>{index + 1}</StyledCell>
                 <StyledCell>{item.hash}</StyledCell>
                 <StyledCell>
-                  <CellLink href={item.link} title={item.link}>{item.link}</CellLink>
+                  <CellLink href={item.link} title={item.link}>
+                    {item.link}
+                  </CellLink>
                 </StyledCell>
               </CustomRow>
             ))}

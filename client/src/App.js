@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { styled } from "baseui";
 import { BrowserRouter } from "react-router-dom";
-import { Header, Footer, LinksList, ContentBody } from "./components";
+import { Header, Footer, ContentBody } from "./components";
 
 const App = styled("div", () => ({
   display: "flex",
