@@ -2,7 +2,7 @@ import React from "react";
 import { styled } from "baseui";
 import { Route } from "react-router-dom";
 
-import { Home, LinkInfo, LinksList, Navigation } from "../../index";
+import { Home, LinkInfo, LinksList } from "../../index";
 
 const ContentBody = styled("div", () => ({
   flexGrow: "1",
