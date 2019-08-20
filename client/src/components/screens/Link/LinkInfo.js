@@ -10,7 +10,7 @@ import {
   StyledCell
 } from "baseui/table";
 
-import { InfoMessage } from "../../index";
+import { KIND, Toast } from "baseui/toast";
 
 export default function LinkInfo({ match }) {
   const linkID = match.params.linkId;
@@ -31,7 +31,7 @@ export default function LinkInfo({ match }) {
         setStatus(`${error}`);
         setLink({});
       });
-  }, []);
+  }, [linkID]);
 
   const headTitles = () =>
     Object.keys(link).map((key, index) => (
@@ -48,10 +48,22 @@ export default function LinkInfo({ match }) {
         <h1>Links Info</h1>
       </Block>
       <Block margin={"1em 0"}>
-        <InfoMessage
-          isError={isReqError}
-          message={status}
-        />
+        <Toast
+          autoHideDuration={3000}
+          key={status}
+          kind={isReqError ? KIND.warning : KIND.positive}
+          overrides={{
+            Body: {
+              style: {
+                position: "fixed",
+                bottom: "2em",
+                right: "2em"
+              }
+            }
+          }}
+        >
+          {status}
+        </Toast>
       </Block>
       <Block>
         <StyledTable>

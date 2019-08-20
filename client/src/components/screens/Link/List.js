@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useInput } from "../../../utils/hooks";
-import { listContent, settingsAPI } from "../../../constants";
+import { Toast, KIND } from "baseui/toast";
 import { withStyle } from "styletron-react";
-import { InfoMessage } from "../../index";
+
+import { listContent, settingsAPI } from "../../../constants";
 
 import { styled } from "baseui";
 import {
@@ -59,18 +60,18 @@ function List() {
       .then(response => response.json())
       .then(({ data, status }) => {
         if (typeof data !== "string") {
-          setStatus(status);
-          setIsReqError(true);
-          setListLinks([...listLinks, data]);
-        } else {
+          setStatus("Success");
           setIsReqError(false);
-          setStatus(data);
+          setListLinks([...listLinks, data]);
           reset();
+        } else {
+          setIsReqError(true);
+          setStatus(`Error: ${data}`);
         }
       })
       .catch(error => {
         setIsReqError(true);
-        setStatus(`${error}`);
+        setStatus(`Error: ${error}`);
       });
   }
 
@@ -79,16 +80,16 @@ function List() {
       .then(response => response.json())
       .then(({ data, status }) => {
         setIsReqError(false);
-        setStatus(status);
+        setStatus("Success");
         setListLinks(data);
       })
       .catch(error => {
         setIsReqError(true);
-        setStatus(`${error}`);
+        setStatus(`Error: ${error}`);
         setListLinks([]);
       });
   }, []);
-
+  // TODO improve of notifications
   return (
     <React.Fragment>
       <h1>Magic Links</h1>
@@ -110,10 +111,22 @@ function List() {
         </Button>
       </Block>
       <Block>
-        <InfoMessage
-          message={status}
-          isError={isReqError}
-        />
+        <Toast
+          autoHideDuration={3000}
+          key={status}
+          kind={isReqError ? KIND.warning : KIND.positive}
+          overrides={{
+            Body: {
+              style: {
+                position: "fixed",
+                bottom: "2em",
+                right: "2em"
+              }
+            }
+          }}
+        >
+          {status}
+        </Toast>
       </Block>
       <Block margin={"1.5em 0"}>
         <StyledTable>
