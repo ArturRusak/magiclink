@@ -5,7 +5,7 @@ const cors = require("@koa/cors");
 const serve = require("koa-static");
 const bodyParser = require("koa-bodyparser");
 const path = require("path");
-const { linkRoutes, indexRoute } = require("./routes");
+const { linkRoutes, userRoutes, indexRoute } = require("./routes");
 const { DAO } = require("./DAO");
 const { links } = require("./data"); // eslint-disable-line no-unused-vars
 const config = require("./constants");
@@ -18,6 +18,7 @@ app.use(cors());
 app.use(serve(path.join(__dirname, "../client/build")));
 app.use(bodyParser());
 app.use(indexRoute.routes());
+app.use(userRoutes.routes());
 app.use(linkRoutes.routes());
 
 dao.connect(() => {

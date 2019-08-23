@@ -1,6 +1,7 @@
 "use strict";
 
 const link = require("./linksModel");
+const user = require("./usersModel");
 const MongoClient = require("mongodb").MongoClient;
 
 /*type Config = {
@@ -52,6 +53,7 @@ class DAO {
       this.dbConnection = client;
       this.db = client.db(this.dbName);
       link.setConnection(this.db);
+      user.setConnection(this.db);
       console.info("\x1b[32m", "\nConnected successfully to server"); // eslint-disable-line no-console
       callback && callback();
     });
