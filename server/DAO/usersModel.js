@@ -59,5 +59,4 @@ class UsersModel extends BaseModel {
   }
 }
 
-
 module.exports = new UsersModel();

@@ -1,11 +1,11 @@
-const { userModel } = require("../DAO");
+const { usersModel } = require("../DAO");
 
 /**
  *
  * @returns {Promise<any>}
  */
 function getUsers() {
-  return userModel.getUsers();
+  return usersModel.getUsers();
 }
 
 /**
@@ -14,7 +14,7 @@ function getUsers() {
  * @returns {Promise<any>}
  */
 function findUser(param) {
-  return userModel.findUser(param);
+  return usersModel.findUser(param);
 }
 
 /**
@@ -23,7 +23,7 @@ function findUser(param) {
  * @returns {Promise<any>}
  */
 function saveUser(user) {
-  return userModel.saveUser(user);
+  return usersModel.saveUser(user);
 }
 
 module.exports = {
