@@ -3,7 +3,7 @@ const BaseModel = require("./BaseModel");
 class UsersModel extends BaseModel {
   constructor() {
     super();
-    this.collectionName = "users";
+    this.collectionName = "users"; //TODO IMPROVE
   }
 
   /**

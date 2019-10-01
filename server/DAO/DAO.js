@@ -100,7 +100,10 @@ class DAO {
           "\nDrop collection error!", error
         );
       }
-      callback && callback({ collectionName, dataList }, () => console.log("SUCCESS"));
+      callback && callback({
+        collectionName,
+        dataList
+      }, () => console.log(`------${collectionName.toUpperCase()}----- was updated with success`)); // eslint-disable-line no-console
     });
   }
 
