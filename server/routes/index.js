@@ -14,5 +14,4 @@ route.use(authRouters.routes());
 route.use(linkRoutes.routes());
 route.use(userRoutes.routes());
 
-
 module.exports = route;

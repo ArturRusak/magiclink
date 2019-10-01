@@ -40,7 +40,7 @@ router
   })
   .post("/links", async ctx => {
     await addLink(ctx.request.body)
-      .then((item) => {
+      .then(item => {
         ctx.body = {
           status: "success",
           data: item

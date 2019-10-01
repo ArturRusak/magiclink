@@ -33,9 +33,10 @@ class UsersModel extends BaseModel {
     const { db, collectionName } = this;
     return new Promise((resolve, reject) => {
       db.collection(collectionName).findOne(param, (error, result) => {
-        if (error) {
+        if (error || !result) {
           reject(error);
         }
+
         resolve(result);
       });
     });

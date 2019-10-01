@@ -72,11 +72,9 @@ class DAO {
         "\nInitial data was failed! Connection not found! Please check the connection!"
       );
     }
-    this.db.collection(collectionName).insertMany(dataList, (error) => {
+    this.db.collection(collectionName).insertMany(dataList, error => {
       if (error) {
-        throw new Error(
-          "\nError of initial insert data!"
-        );
+        throw new Error("\nError of initial insert data!");
       }
       callback && callback();
     });
@@ -94,19 +92,23 @@ class DAO {
         "\nInitial data was failed! Connection not found! Please check the connection!"
       );
     }
-    this.db.collection(collectionName).deleteMany({}, (error) => {
+    this.db.collection(collectionName).deleteMany({}, error => {
       if (error) {
-        throw new Error(
-          "\nDrop collection error!", error
-        );
+        throw new Error("\nDrop collection error!", error);
       }
-      callback && callback({
-        collectionName,
-        dataList
-      }, () => console.log(`------${collectionName.toUpperCase()}----- was updated with success`)); // eslint-disable-line no-console
+      callback &&
+        callback(
+          {
+            collectionName,
+            dataList
+          },
+          () =>
+            console.log(
+              `------${collectionName.toUpperCase()}----- was updated with success`
+            )
+        ); // eslint-disable-line no-console
     });
   }
-
 
   /**
    * Close connection

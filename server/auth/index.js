@@ -16,6 +16,8 @@ passport.serializeUser((user, done) => {
 });
 /*passport.deserializeUser((id, done) => ({user: "test"}));*/
 
-passport.use(new LocalStrategy(options, (user, password, done) => {
-  done(null, { user: "test" });
-}));
+passport.use(
+  new LocalStrategy(options, (user, password, done) => {
+    done(null, { user: "test" });
+  })
+);

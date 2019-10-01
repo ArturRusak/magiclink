@@ -1,3 +1,6 @@
+"use strict";
+
+const ObjectId = require("mongodb").ObjectId;
 const { usersModel } = require("../DAO");
 
 /**
@@ -10,11 +13,12 @@ function getUsers() {
 
 /**
  *
- * @param {Object} param
+ * @param {String} id - unique of user
  * @returns {Promise<any>}
  */
-function findUser(param) {
-  return usersModel.findUser(param);
+function findUserByID(id) {
+  const _id = new ObjectId(id);
+  return usersModel.findUser({ _id });
 }
 
 /**
@@ -28,6 +32,6 @@ function saveUser(user) {
 
 module.exports = {
   getUsers,
-  findUser,
+  findUserByID,
   saveUser
 };
