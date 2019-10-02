@@ -20,7 +20,7 @@ function saveUser(user) {
   const salt = bcrypt.genSaltSync(10);
   password = bcrypt.hashSync(password, salt);
 
-  return usersModel.saveUser({...user, password})
+  return usersModel.saveUser({...user, password});
 }
 
 module.exports = {
