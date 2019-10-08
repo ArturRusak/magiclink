@@ -30,7 +30,7 @@ app.use(cors());
 app.use(serve(path.join(__dirname, "../client/build")));
 app.use(bodyParser());
 
-require("./auth");
+require("./auth")(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 

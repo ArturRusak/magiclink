@@ -8,7 +8,8 @@ const {usersModel} = require("../DAO");
  * @returns {Promise<any>}
  */
 function checkUser(user) {
-  return usersModel.findUser(user);
+  usersModel.findUser(user);
+  return;
 }
 
 /**

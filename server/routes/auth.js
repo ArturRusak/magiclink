@@ -1,12 +1,18 @@
 "use strict";
 
 const Router = require("koa-router");
+const passport = require("koa-passport");
 const {checkUser, saveUser} = require("../controllers").auth;
 
 const router = new Router();
 
-router.post("/login", async ctx => {
-  const { userName, password } = ctx.request.body;
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/users",
+    failureRedirect: "/links"
+  })
+  /* const { userName, password } = ctx.request.body;
   await checkUser({userName})
     .then(user => {
       if (user) {
@@ -31,8 +37,8 @@ router.post("/login", async ctx => {
         status: "error",
         data: error
       };
-    });
-});
+    });*/
+);
 
 router.post("/registration", async ctx => {
   await saveUser(ctx.request.body)
