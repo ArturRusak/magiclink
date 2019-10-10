@@ -2,42 +2,14 @@
 
 const Router = require("koa-router");
 const passport = require("koa-passport");
-const {checkUser, saveUser} = require("../controllers").auth;
+const {saveUser} = require("../controllers").auth;
 
 const router = new Router();
 
-router.post(
-  "/login",
-  passport.authenticate("local", {
+router.post("/login", passport.authenticate("local", {
     successRedirect: "/users",
     failureRedirect: "/links"
   })
-  /* const { userName, password } = ctx.request.body;
-  await checkUser({userName})
-    .then(user => {
-      if (user) {
-        const { password: userPassword } = user;
-        if (password === userPassword) {
-          ctx.body = {
-            status: "success",
-            data: user
-          };
-          return;
-        }
-        const result = `${password} - input password \n ${userPassword} - got password`;
-        console.log(result);
-        ctx.body = {
-          status: "success",
-          data: result
-        };
-      }
-    })
-    .catch(error => {
-      ctx.body = {
-        status: "error",
-        data: error
-      };
-    });*/
 );
 
 router.post("/registration", async ctx => {

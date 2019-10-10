@@ -23,6 +23,15 @@ function findUserByID(id) {
 
 /**
  *
+ * @param {String} nick - unique value of user data
+ * @returns {Promise<any>}
+ */
+function findUserByNickName(nick) {
+  return usersModel.checkUser({userName: nick});
+}
+
+/**
+ *
  * @param {Object} user
  * @returns {Promise<any>}
  */
@@ -33,5 +42,6 @@ function saveUser(user) {
 module.exports = {
   getUsers,
   findUserByID,
+  findUserByNickName,
   saveUser
 };

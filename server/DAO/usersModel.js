@@ -42,6 +42,24 @@ class UsersModel extends BaseModel {
     });
   }
 
+
+  /**
+   * @param {Object} param
+   * @returns {Promise<any>}
+   */
+  checkUser(param) {
+    const {db, collectionName} = this;
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName).findOne(param, (error, result) => {
+        if (error) {
+          reject(error);
+        }
+
+        resolve(result);
+      });
+    });
+  }
+
   /**
    *
    * @param {Object} newUser
