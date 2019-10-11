@@ -2,13 +2,14 @@
 
 const Router = require("koa-router");
 const passport = require("koa-passport");
-const {saveUser} = require("../controllers").auth;
+const { saveUser } = require("../controllers").auth;
 
 const router = new Router();
 
-router.post("/login", passport.authenticate("local", {
-    successRedirect: "/users",
-    failureRedirect: "/links"
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/links"
   })
 );
 
