@@ -1,15 +1,17 @@
 "use strict";
 
+const authRouters = require("./auth");
 const linkRoutes = require("./links");
+const userRoutes = require("./users");
 
 const Router = require("koa-router");
-const router = new Router();
+const route = new Router();
 
-router.get("/", async ctx => {
+route.get("/", async ctx => {
   ctx.body = "Hello World!";
 });
+route.use(authRouters.routes());
+route.use(linkRoutes.routes());
+route.use(userRoutes.routes());
 
-module.exports = {
-  linkRoutes,
-  indexRoute: router
-};
+module.exports = route;

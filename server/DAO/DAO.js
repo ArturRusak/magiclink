@@ -1,6 +1,7 @@
 "use strict";
 
 const link = require("./linksModel");
+const user = require("./usersModel");
 const MongoClient = require("mongodb").MongoClient;
 
 /*type Config = {
@@ -52,6 +53,7 @@ class DAO {
       this.dbConnection = client;
       this.db = client.db(this.dbName);
       link.setConnection(this.db);
+      user.setConnection(this.db);
       console.info("\x1b[32m", "\nConnected successfully to server"); // eslint-disable-line no-console
       callback && callback();
     });
@@ -70,11 +72,9 @@ class DAO {
         "\nInitial data was failed! Connection not found! Please check the connection!"
       );
     }
-    this.db.collection(collectionName).insertMany(dataList, (error) => {
+    this.db.collection(collectionName).insertMany(dataList, error => {
       if (error) {
-        throw new Error(
-          "\nError of initial insert data!"
-        );
+        throw new Error("\nError of initial insert data!");
       }
       callback && callback();
     });
@@ -92,16 +92,23 @@ class DAO {
         "\nInitial data was failed! Connection not found! Please check the connection!"
       );
     }
-    this.db.collection(collectionName).deleteMany({}, (error) => {
+    this.db.collection(collectionName).deleteMany({}, error => {
       if (error) {
-        throw new Error(
-          "\nDrop collection error!", error
-        );
+        throw new Error("\nDrop collection error!", error);
       }
-      callback && callback({ collectionName, dataList }, () => console.log("SUCCESS"));
+      callback &&
+        callback(
+          {
+            collectionName,
+            dataList
+          },
+          () =>
+            console.log(
+              `------${collectionName.toUpperCase()}----- was updated with success`
+            )
+        ); // eslint-disable-line no-console
     });
   }
-
 
   /**
    * Close connection
