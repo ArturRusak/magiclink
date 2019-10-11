@@ -18,4 +18,23 @@ const linksList = [
   }
 ];
 
-module.exports = linksList;
+const users = [
+  {
+    userName: "user1",
+    password: "user1"
+  },
+  {
+    userName: "user2",
+    password: "user2"
+  },
+
+  {
+    userName: "user3",
+    password: "user3"
+  }
+];
+
+module.exports = {
+  linksList,
+  users
+};

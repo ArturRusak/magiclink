@@ -1,7 +1,7 @@
 "use strict";
 
-const links = require("./magicLink");
+const data = require("./magicLink");
 
 module.exports = {
-  links
+  data
 };
