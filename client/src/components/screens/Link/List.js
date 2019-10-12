@@ -101,9 +101,10 @@ function List() {
         backgroundColor={"#dadada"}
       >
         <Input
+          type={"text"}
           onChange={event => onChange(event)}
           size={SIZE.large}
-          placeholder="Input link"
+          placeholder={"Input link"}
           value={value}
         />
         <Button onClick={e => handleSubmit(e)} type={"submit"}>
