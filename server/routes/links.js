@@ -10,9 +10,9 @@ const router = new Router();
 router
   .get(
     "/links",
-    passport.authenticate("local", {
-      failureRedirect: "/login"
-    }),
+    /*    passport.authenticate("local", {
+          failureRedirect: "/login"
+        }),*/
     async ctx => {
       await getLinks()
         .then(links => {

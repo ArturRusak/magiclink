@@ -34,12 +34,12 @@ module.exports = function(passport) {
   });
 
   passport.deserializeUser(function(userName, done) {
-    done(null, userName);
+
     users
       .findUser(userName)
       .then(user => {
         if (user) {
-          done(null, user);
+          done(null, userName);
         }
         return done("Something was wrong!");
       })

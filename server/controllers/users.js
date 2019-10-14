@@ -27,7 +27,7 @@ function findUserByID(id) {
  * @returns {Promise<any>}
  */
 function findUser(param) {
-  return usersModel.findUser(param);
+  return usersModel.findUser({ userName: param });
 }
 
 /**

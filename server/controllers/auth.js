@@ -16,8 +16,9 @@ function saveUser(user) {
     .then(foundUser => {
       if (!foundUser) {
         const salt = bcrypt.genSaltSync(10);
-        password = bcrypt.hashSync(password, salt);
-        return usersModel.saveUser({ password, ...user });
+        const hashPassword = bcrypt.hashSync(password, salt);
+
+        return usersModel.saveUser({ ...user, password: hashPassword });
       }
       return Promise.reject("The user already exists!");
     })
