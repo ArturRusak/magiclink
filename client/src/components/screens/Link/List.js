@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useInput } from "../../../utils/hooks";
 import { Toast, KIND } from "baseui/toast";
 import { withStyle } from "styletron-react";
+import { getLinks } from "../../../services/api/links";
 
 import { listContent, settingsAPI } from "../../../constants";
 
@@ -76,18 +77,8 @@ function List() {
   }
 
   useEffect(() => {
-    fetch(`${settingsAPI.API}/links`)
-      .then(response => response.json())
-      .then(({ data, status }) => {
-        setIsReqError(false);
-        setStatus("Success");
-        setListLinks(data);
-      })
-      .catch(error => {
-        setIsReqError(true);
-        setStatus(`Error: ${error}`);
-        setListLinks([]);
-      });
+    const test = getLinks();
+    console.log(test);
   }, []);
   // TODO improve of notifications
   return (
