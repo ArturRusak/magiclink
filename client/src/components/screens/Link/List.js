@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useInput } from "../../../utils/hooks";
 import { Toast, KIND } from "baseui/toast";
 import { withStyle } from "styletron-react";
-import { getLinks } from "../../../services/api/links";
+import { getLinks, saveLink } from "../../../services/api/links";
 
 import { listContent, settingsAPI } from "../../../constants";
 
@@ -49,36 +49,46 @@ function List() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    fetch(`${settingsAPI.API}/links`, {
-      method: "POST",
-      headers: settingsAPI.headers,
-      body: JSON.stringify({
-        id: "test",
-        hash: "hash",
-        link: value
-      })
-    })
-      .then(response => response.json())
-      .then(({ data, status }) => {
-        if (typeof data !== "string") {
-          setStatus("Success");
-          setIsReqError(false);
-          setListLinks([...listLinks, data]);
-          reset();
-        } else {
-          setIsReqError(true);
-          setStatus(`Error: ${data}`);
-        }
-      })
-      .catch(error => {
+    (async function() {
+      const result = await saveLink(value);
+      const isError = result instanceof Error;
+
+      if (isError) {
         setIsReqError(true);
-        setStatus(`Error: ${error}`);
-      });
+        setStatus(`${result}`);
+        return;
+      }
+      const { data, status } = result;
+
+      if (typeof data === "string") {
+        setIsReqError(true);
+        setStatus(`Error: ${data}`);
+        return;
+      }
+      setStatus(status);
+      setIsReqError(false);
+      setListLinks([...listLinks, data]);
+      reset();
+    })();
   }
 
   useEffect(() => {
-    const test = getLinks();
-    console.log(test);
+    (async function() {
+      const result = await getLinks();
+      const isError = result instanceof Error;
+
+      if (isError) {
+        setIsReqError(true);
+        setStatus(`${result}`);
+        setListLinks([]);
+        return;
+      }
+      const { data, status } = result;
+      setIsReqError(false);
+      setStatus(status);
+      setListLinks(data);
+
+    })();
   }, []);
   // TODO improve of notifications
   return (
