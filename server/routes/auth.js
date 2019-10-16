@@ -8,9 +8,11 @@ const router = new Router();
 
 router.post(
   "/login",
-  passport.authenticate("local", {
-    successRedirect: "/links"
-  })
+  passport.authenticate("local"), ctx => {
+    ctx.body = {
+      user: 111
+    };
+  }
 );
 
 router.post("/registration", async ctx => {

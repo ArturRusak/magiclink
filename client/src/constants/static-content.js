@@ -7,7 +7,6 @@ export const commonContent = {
 };
 
 export const settingsAPI = {
-  API: "http://localhost:3001",
   headers: {
     "Content-Type": "application/json",
     "Accept": "application/json"

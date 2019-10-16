@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { login } from "../../../services/api";
+
 import { Input, SIZE } from "baseui/input";
 import { Button, KIND } from 'baseui/button';
-import { settingsAPI } from "../../../constants";
 import { useInput } from "../../../utils/hooks";
 
 export default function Login() {
@@ -11,29 +12,10 @@ export default function Login() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    fetch(`${settingsAPI.API}/login`, {
-      method: "POST",
-      headers: settingsAPI.headers,
-      body: JSON.stringify({
-        username: "ARTUR",
-        password: "test"
-      })
-    })
-      .then(response => response.json())
-      .then(({ data, status }) => {
-        if (typeof data !== "string") {
-          setStatus("Success");
-          setIsReqError(false);
-          reset();
-        } else {
-          setIsReqError(true);
-          setStatus(`Error: ${data}`);
-        }
-      })
-      .catch(error => {
-        setIsReqError(true);
-        setStatus(`Error: ${error}`);
-      });
+    (async function() {
+      const result = await login();
+      console.log(result);
+    })();
   }
 
   return (

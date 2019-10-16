@@ -1,32 +1,21 @@
-import { settingsAPI } from "../../constants";
-
+import axios from "axios";
 
 export function getLinks() {
-  return fetch(`${settingsAPI.API}/links`)
-    .then(response => response.json())
-    .then(data => data)
+  return axios.get(`/links`, { withCredentials: true })
+    .then(response => response.data)
     .catch(error => error);
 }
 
 export function getLinkInfo(linkID) {
-  return fetch(`${settingsAPI.API}/links/${linkID}`)
-    .then(response => response.json())
-    .then(data => data)
+  return axios.get(`/links/${linkID}`)
+    .then(response => response.data)
     .catch(error => error);
 }
 
 export function saveLink(value) {
-  return fetch(`${settingsAPI.API}/links`, {
-    method: "POST",
-    headers: settingsAPI.headers,
-    //TODO SOLVE PROBLEM RELATED VALUE
-    body: JSON.stringify({
-      id: "test",
-      hash: "hash",
-      link: value
-    })
+  return axios.post(`/links`, {
+    link: value
   })
-    .then(response => response.json())
-    .then(data => data)
+    .then(response => response.data)
     .catch(error => error);
 }

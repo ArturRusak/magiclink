@@ -2,7 +2,6 @@
 
 const Router = require("koa-router");
 const ObjectId = require("mongodb").ObjectId;
-const passport = require("koa-passport");
 const { getLinks, getLinkByParam, addLink } = require("../controllers").links;
 
 const router = new Router();
