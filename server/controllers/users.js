@@ -27,7 +27,7 @@ function findUserByID(id) {
  * @returns {Promise<any>}
  */
 function findUser(param) {
-  return usersModel.findUser({ userName: param });
+  return usersModel.findUser({username: param});
 }
 
 /**
@@ -36,7 +36,7 @@ function findUser(param) {
  * @returns {Promise<any>}
  */
 function findUserByNickName(nick) {
-  return usersModel.checkUser({ userName: nick });
+  return usersModel.checkUser({username: nick});
 }
 
 /**

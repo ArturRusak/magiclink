@@ -19,7 +19,6 @@ module.exports = function(passport) {
               return done(null, false, { message: error });
             }
             if (isMatch) {
-              console.log(user);
               return done(null, user);
             } else {
               return done(null, false, { message: "Password incorrect" });
@@ -31,16 +30,16 @@ module.exports = function(passport) {
   );
 
   passport.serializeUser(function(user, done) {
-    done(null, user.userName);
+    done(null, user.username);
   });
 
-  passport.deserializeUser(function(userName, done) {
+  passport.deserializeUser(function (username, done) {
 
     users
-      .findUser(userName)
+      .findUser(username)
       .then(user => {
         if (user) {
-          done(null, userName);
+          done(null, username);
         }
         return done("Something was wrong!");
       })
