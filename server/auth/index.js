@@ -39,7 +39,7 @@ module.exports = function(passport) {
       .findUser(username)
       .then(user => {
         if (user) {
-          done(null, username);
+          done(null, user);
         }
         return done("Something was wrong!");
       })

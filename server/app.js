@@ -15,9 +15,7 @@ const session = require("koa-session");
 
 const dao = new DAO(config);
 const app = new Koa();
-const SESSION_CONFIG = {
-  maxAge: 2000
-};
+const SESSION_CONFIG = {};
 
 // sessions
 app.keys = ["super-secret-key"];
