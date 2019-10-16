@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useInput } from "../../../utils/hooks";
 import { Toast, KIND } from "baseui/toast";
 import { withStyle } from "styletron-react";
-import { getLinks, saveLink } from "../../../services/api/links";
+import { getLinks, saveLink } from "../../../services/api";
 
-import { listContent, settingsAPI } from "../../../constants";
+import { listContent } from "../../../constants";
 
 import { styled } from "baseui";
 import {
@@ -50,15 +50,16 @@ function List() {
   function handleSubmit(e) {
     e.preventDefault();
     (async function() {
-      const result = await saveLink(value);
-      const isError = result instanceof Error;
+      const responseBody = await saveLink(value);
+      const isError = responseBody instanceof Error;
 
       if (isError) {
         setIsReqError(true);
-        setStatus(`${result}`);
+        setStatus(`${responseBody}`);
         return;
       }
-      const { data, status } = result;
+
+      const { data, status } = responseBody;
 
       if (typeof data === "string") {
         setIsReqError(true);
@@ -74,16 +75,17 @@ function List() {
 
   useEffect(() => {
     (async function() {
-      const result = await getLinks();
-      const isError = result instanceof Error;
+      const responseBody = await getLinks();
+      const isError = responseBody instanceof Error;
 
       if (isError) {
         setIsReqError(true);
-        setStatus(`${result}`);
+        setStatus(`${responseBody}`);
         setListLinks([]);
         return;
       }
-      const { data, status } = result;
+
+      const { data, status } = responseBody;
       setIsReqError(false);
       setStatus(status);
       setListLinks(data);

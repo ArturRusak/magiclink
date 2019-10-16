@@ -8,6 +8,13 @@ export function getLinks() {
     .catch(error => error);
 }
 
+export function getLinkInfo(linkID) {
+  return fetch(`${settingsAPI.API}/links/${linkID}`)
+    .then(response => response.json())
+    .then(data => data)
+    .catch(error => error);
+}
+
 export function saveLink(value) {
   return fetch(`${settingsAPI.API}/links`, {
     method: "POST",
