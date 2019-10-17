@@ -30,11 +30,11 @@ const CellLink = styled("a", {
   position: "relative"
 });
 
-function LinksTable({ tableTitles, bodyRows }) {
+function LinksTable({headTitles, bodyRows}) {
   return (
     <StyledTable>
       <StyledHead>
-        {tableTitles.map((title, index) => (
+        {headTitles.map((title, index) => (
           <StyledHeadCell key={`${index}-head`}>{title}</StyledHeadCell>
         ))}
       </StyledHead>
