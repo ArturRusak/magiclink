@@ -1,44 +1,62 @@
 import React, { useState } from "react";
-import { login } from "../../../services/api";
+import { handleLogin } from "../../../services/api";
 
 import { Input, SIZE } from "baseui/input";
 import { Button, KIND } from 'baseui/button';
+import { Block } from "baseui/block";
 import { useInput } from "../../../utils/hooks";
 
 export default function Login() {
-  const { value, reset, onChange } = useInput("");
-  const [status, setStatus] = useState("");
-  const [isReqError, setIsReqError] = useState(false);
+  //TODO replace several constants to one - need to use one state for except extra code
+  const [login, resetLogin, setLogin] = useInput("");
+  const [password, resetPassword, setPassword] = useInput("");
 
   function handleSubmit(e) {
     e.preventDefault();
-    (async function() {
-      const result = await login();
-      console.log(result);
+
+    (async function () {
+      await handleLogin({login, password});
+      resetLogin();
+      resetPassword();
     })();
   }
 
   return (
     <React.Fragment>
-      <Input
-        type={"text"}
-        size={SIZE.compact}
-        placeholder={"Login"}
-        onChange={event => onChange(event)}
-      />
-      <Input
-        type={"password"}
-        size={SIZE.compact}
-        placeholder={"Login"}
-        onChange={event => onChange(event)}
-      />
-      <Button
-        kind={KIND.secondary}
-        type={"submit"}
-        onClick={(e) => handleSubmit(e)}
+      <Block
+        maxWidth={"40em"}
+        margin={"2em auto 0"}
       >
-        Login
-      </Button>
+        <Block
+          marginBottom={"1em"}
+        >
+          <Input
+            type={"text"}
+            size={SIZE.compact}
+            placeholder={"Login"}
+            onChange={event => setLogin(event)}
+            value={login}
+          />
+        </Block>
+        <Block
+          marginBottom={"1.5em"}
+        >
+          <Input
+            type={"password"}
+            size={SIZE.compact}
+            placeholder={"Password"}
+            onChange={event => setPassword(event)}
+            value={password}
+          />
+        </Block>
+        <Button
+          kind={KIND.secondary}
+          type={"submit"}
+          onClick={(e) => handleSubmit(e)}
+        >
+          Login
+        </Button>
+      </Block>
     </React.Fragment>
   );
 };

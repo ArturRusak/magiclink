@@ -18,7 +18,7 @@ function ListsList() {
   const [status, setStatus] = useState("");
   const [isReqError, setIsReqError] = useState(false);
 
-  const { value, reset, onChange } = useInput("");
+  const [value, reset, onChange] = useInput("");
   const { tableTitles } = listContent;
 
   function handleSubmit(e) {
@@ -78,9 +78,9 @@ function ListsList() {
       >
         <Input
           type={"text"}
-          onChange={event => onChange(event)}
           size={SIZE.large}
           placeholder={"Input link"}
+          onChange={event => onChange(event)}
           value={value}
         />
         <Button onClick={e => handleSubmit(e)} type={"submit"}>
