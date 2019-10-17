@@ -3,6 +3,7 @@
 const Koa = require("koa");
 const cors = require("@koa/cors");
 const serve = require("koa-static");
+const morgan = require("koa-morgan");
 const bodyParser = require("koa-bodyparser");
 const path = require("path");
 const route = require("./routes");
@@ -25,6 +26,9 @@ app.use(session(SESSION_CONFIG, app));
 
 // CORS
 app.use(cors());
+
+//logger
+//app.use(morgan('combined'));
 
 // eslint-disable-next-line no-undef
 app.use(serve(path.join(__dirname, "../client/build")));

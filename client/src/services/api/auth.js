@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export function login() {
+export function handleLogin({login, password}) {
   return axios.post(`/login`, {
-    username: "ARTUR",
-    password: "test"
+    username: login,
+    password
   })
     .then(response => response.data)
     .catch(error => error);

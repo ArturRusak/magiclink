@@ -12,13 +12,13 @@ import { Button } from "baseui/button";
 import { Input, SIZE } from "baseui/input";
 import { H2 } from "baseui/typography";
 
-function List() {
+function ListsList() {
   const isAuthentificated = useContext(AuthContext);
   const [listLinks, setListLinks] = useState([]);
   const [status, setStatus] = useState("");
   const [isReqError, setIsReqError] = useState(false);
 
-  const { value, reset, onChange } = useInput("");
+  const [value, reset, onChange] = useInput("");
   const { tableTitles } = listContent;
 
   function handleSubmit(e) {
@@ -78,9 +78,9 @@ function List() {
       >
         <Input
           type={"text"}
-          onChange={event => onChange(event)}
           size={SIZE.large}
           placeholder={"Input link"}
+          onChange={event => onChange(event)}
           value={value}
         />
         <Button onClick={e => handleSubmit(e)} type={"submit"}>
@@ -106,7 +106,7 @@ function List() {
         </Toast>
       </Block>
       <Block margin={"1.5em 0"}>
-        {!isAuthentificated ? (
+        {isAuthentificated ? (
           <LinksTable headTitles={tableTitles} bodyRows={listLinks}/>
         ) : (
           <Block>
@@ -118,4 +118,4 @@ function List() {
   );
 }
 
-export default List;
+export default ListsList;
