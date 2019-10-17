@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { styled } from "baseui";
 import { Route } from "react-router-dom";
 
-import { Home, LinkInfo, LinksList } from "../../index";
+import { Home, LinkInfo, LinksList, Login } from "../../index";
 
 const ContentBody = styled("div", () => ({
   flexGrow: "1",
@@ -18,6 +18,7 @@ export default function() {
       <Route exact path="/" component={Home}/>
       <Route exact path="/links" component={LinksList}/>
       <Route path="/links/:linkId" component={LinkInfo}/>
+      <Route exact path="/login" component={Login}/>
     </ContentBody>
   );
 }

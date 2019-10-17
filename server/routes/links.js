@@ -2,7 +2,7 @@
 
 const Router = require("koa-router");
 const ObjectId = require("mongodb").ObjectId;
-const passport = require("koa-passport");
+const { authenticated } = require("../auth");
 const { getLinks, getLinkByParam, addLink } = require("../controllers").links;
 
 const router = new Router();
@@ -10,9 +10,7 @@ const router = new Router();
 router
   .get(
     "/links",
-    passport.authenticate("local", {
-      failureRedirect: "/login"
-    }),
+    authenticated(),
     async ctx => {
       await getLinks()
         .then(links => {

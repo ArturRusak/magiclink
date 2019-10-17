@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { styled } from "baseui";
 import { BrowserRouter } from "react-router-dom";
-import { Header, Footer, ContentBody } from "./components";
+import { AuthProvider, Header, Footer, ContentBody } from "./components";
 
 const App = styled("div", () => ({
   display: "flex",
@@ -14,11 +14,13 @@ const App = styled("div", () => ({
 export default function() {
   return (
     <BrowserRouter>
-      <App className="App">
-        <Header/>
-        <ContentBody/>
-        <Footer/>
-      </App>
+      <AuthProvider>
+        <App className="App">
+          <Header/>
+          <ContentBody/>
+          <Footer/>
+        </App>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

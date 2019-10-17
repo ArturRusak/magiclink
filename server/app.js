@@ -7,6 +7,8 @@ const bodyParser = require("koa-bodyparser");
 const path = require("path");
 const route = require("./routes");
 const { DAO } = require("./DAO");
+const { initPassport } = require("./auth");
+
 const { data } = require("./data"); // eslint-disable-line no-unused-vars
 const config = require("./constants");
 
@@ -15,9 +17,7 @@ const session = require("koa-session");
 
 const dao = new DAO(config);
 const app = new Koa();
-const SESSION_CONFIG = {
-  maxAge: 2000
-};
+const SESSION_CONFIG = {};
 
 // sessions
 app.keys = ["super-secret-key"];
@@ -30,7 +30,7 @@ app.use(cors());
 app.use(serve(path.join(__dirname, "../client/build")));
 app.use(bodyParser());
 
-require("./auth")(passport);
+initPassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 

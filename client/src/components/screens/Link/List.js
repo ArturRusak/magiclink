@@ -1,44 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext, LinksTable } from "../../";
+
 import { useInput } from "../../../utils/hooks";
 import { Toast, KIND } from "baseui/toast";
-import { withStyle } from "styletron-react";
+import { getLinks, saveLink } from "../../../services/api";
 
-import { listContent, settingsAPI } from "../../../constants";
+import { listContent } from "../../../constants";
 
-import { styled } from "baseui";
-import {
-  StyledTable,
-  StyledHead,
-  StyledHeadCell,
-  StyledBody,
-  StyledRow,
-  StyledCell
-} from "baseui/table";
 import { Block } from "baseui/block";
 import { Button } from "baseui/button";
 import { Input, SIZE } from "baseui/input";
-import { Link } from "react-router-dom";
-
-const CustomRow = withStyle(StyledRow, ({ $theme }) => ({
-  position: "relative",
-  ":hover": {
-    background: $theme.colors.primary50,
-    cursor: "pointer"
-  }
-}));
-
-const RowLink = styled(Link, {
-  position: "absolute",
-  width: "100%",
-  height: "100%"
-});
-
-const CellLink = styled("a", {
-  zIndex: "1",
-  position: "relative"
-});
+import { H2 } from "baseui/typography";
 
 function List() {
+  const isAuthentificated = useContext(AuthContext);
   const [listLinks, setListLinks] = useState([]);
   const [status, setStatus] = useState("");
   const [isReqError, setIsReqError] = useState(false);
@@ -48,46 +23,47 @@ function List() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    fetch(`${settingsAPI.API}/links`, {
-      method: "POST",
-      headers: settingsAPI.headers,
-      body: JSON.stringify({
-        id: "test",
-        hash: "hash",
-        link: value
-      })
-    })
-      .then(response => response.json())
-      .then(({ data, status }) => {
-        if (typeof data !== "string") {
-          setStatus("Success");
-          setIsReqError(false);
-          setListLinks([...listLinks, data]);
-          reset();
-        } else {
-          setIsReqError(true);
-          setStatus(`Error: ${data}`);
-        }
-      })
-      .catch(error => {
+    (async function() {
+      const responseBody = await saveLink(value);
+      const isError = responseBody instanceof Error;
+
+      if (isError) {
         setIsReqError(true);
-        setStatus(`Error: ${error}`);
-      });
+        setStatus(`${responseBody}`);
+        return;
+      }
+
+      const { data, status } = responseBody;
+
+      if (typeof data === "string") {
+        setIsReqError(true);
+        setStatus(`Error: ${data}`);
+        return;
+      }
+      setStatus(status);
+      setIsReqError(false);
+      setListLinks([...listLinks, data]);
+      reset();
+    })();
   }
 
   useEffect(() => {
-    fetch(`${settingsAPI.API}/links`)
-      .then(response => response.json())
-      .then(({ data, status }) => {
-        setIsReqError(false);
-        setStatus("Success");
-        setListLinks(data);
-      })
-      .catch(error => {
+    (async function() {
+      const responseBody = await getLinks();
+      const isError = responseBody instanceof Error;
+
+      if (isError) {
         setIsReqError(true);
-        setStatus(`Error: ${error}`);
+        setStatus(`${responseBody}`);
         setListLinks([]);
-      });
+        return;
+      }
+
+      const { data, status } = responseBody;
+      setIsReqError(false);
+      setStatus(status);
+      setListLinks(data);
+    })();
   }, []);
   // TODO improve of notifications
   return (
@@ -101,9 +77,10 @@ function List() {
         backgroundColor={"#dadada"}
       >
         <Input
+          type={"text"}
           onChange={event => onChange(event)}
           size={SIZE.large}
-          placeholder="Input link"
+          placeholder={"Input link"}
           value={value}
         />
         <Button onClick={e => handleSubmit(e)} type={"submit"}>
@@ -129,27 +106,13 @@ function List() {
         </Toast>
       </Block>
       <Block margin={"1.5em 0"}>
-        <StyledTable>
-          <StyledHead>
-            {tableTitles.map((title, index) => (
-              <StyledHeadCell key={`${index}-head`}>{title}</StyledHeadCell>
-            ))}
-          </StyledHead>
-          <StyledBody>
-            {listLinks.map((item, index) => (
-              <CustomRow key={`${item._id}-row`}>
-                <RowLink className={"link-info"} to={`/links/${item._id}`}/>
-                <StyledCell>{index + 1}</StyledCell>
-                <StyledCell>{item.hash}</StyledCell>
-                <StyledCell>
-                  <CellLink href={item.link} title={item.link}>
-                    {item.link}
-                  </CellLink>
-                </StyledCell>
-              </CustomRow>
-            ))}
-          </StyledBody>
-        </StyledTable>
+        {!isAuthentificated ? (
+          <LinksTable headTitles={tableTitles} bodyRows={listLinks}/>
+        ) : (
+          <Block>
+            <H2>Not autorized!</H2>
+          </Block>
+        )}
       </Block>
     </React.Fragment>
   );

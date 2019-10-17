@@ -38,6 +38,9 @@ export default function Navigation() {
           <LiNav>
             <CustomNavLink to="/links">Links</CustomNavLink>
           </LiNav>
+          <LiNav>
+            <CustomNavLink to="/login">Sign in</CustomNavLink>
+          </LiNav>
         </UlNav>
       </nav>
     </Block>

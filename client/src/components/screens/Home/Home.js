@@ -1,7 +1,7 @@
 import React from "react";
 import { Block } from "baseui/block";
 
-export default function LinkInfo() {
+export default function Home() {
   return (
     <React.Fragment>
       <Block>
