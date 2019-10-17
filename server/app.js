@@ -7,6 +7,8 @@ const bodyParser = require("koa-bodyparser");
 const path = require("path");
 const route = require("./routes");
 const { DAO } = require("./DAO");
+const { initPassport } = require("./auth");
+
 const { data } = require("./data"); // eslint-disable-line no-unused-vars
 const config = require("./constants");
 
@@ -28,7 +30,7 @@ app.use(cors());
 app.use(serve(path.join(__dirname, "../client/build")));
 app.use(bodyParser());
 
-require("./auth")(passport);
+initPassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 

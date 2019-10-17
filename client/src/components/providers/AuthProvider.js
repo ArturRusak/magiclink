@@ -1,32 +1,29 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useLayoutEffect } from "react";
+import axios from "axios";
 
 export const AuthContext = React.createContext();
 
-export function AuthProvider(props) {
+
+function AuthProvider(props) {
   const [user, setUser] = useState(null);
   const [isAuthorized, setIsAuthorized] = useState(true);
 
-  useEffect(() => {
-    function handleNotAuthorized() {
-      setIsAuthorized(false);
-    }
+  useLayoutEffect(() => {
+    axios.interceptors.response.use(
+      response => {
+        setIsAuthorized(true);
+        return response;
+      },
+      error => {
+        if (error.response.status === 401) {
+          setIsAuthorized(false);
+        }
 
-    window.addEventListener("notauthorized", handleNotAuthorized);
-    return () =>
-      window.removeEventListener("notauthorized", handleNotAuthorized);
+        return Promise.reject(error);
+      });
   }, []);
 
-  if (!isAuthorized) {
-    return "Not authorized";
-  }
-
-  return <AuthContext.Provider value={user} {...props} />;
+  return <AuthContext.Provider value={isAuthorized} {...props} />;
 }
 
-export function AuthProtection({ children }) {
-  const context = useContext(AuthContext);
-  return <React.Fragment>{children}</React.Fragment>;
-}
-
-
-
+export default AuthProvider;

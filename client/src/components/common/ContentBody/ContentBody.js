@@ -3,7 +3,6 @@ import { styled } from "baseui";
 import { Route } from "react-router-dom";
 
 import { Home, LinkInfo, LinksList, Login } from "../../index";
-import { AuthProvider, AuthProtection } from "../../providers/AuthProvider";
 
 const ContentBody = styled("div", () => ({
   flexGrow: "1",
@@ -16,14 +15,10 @@ const ContentBody = styled("div", () => ({
 export default function() {
   return (
     <ContentBody>
-      <AuthProvider>
-        <AuthProtection>
-          <Route exact path="/" component={Home}/>
-        </AuthProtection>
-        <Route exact path="/links" component={LinksList}/>
-        <Route path="/links/:linkId" component={LinkInfo}/>
-        <Route exact path="/login" component={Login}/>
-      </AuthProvider>
+      <Route exact path="/" component={Home}/>
+      <Route exact path="/links" component={LinksList}/>
+      <Route path="/links/:linkId" component={LinkInfo}/>
+      <Route exact path="/login" component={Login}/>
     </ContentBody>
   );
 }

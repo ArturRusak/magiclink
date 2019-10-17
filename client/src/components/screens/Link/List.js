@@ -1,45 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext, LinksTable } from "../../";
+
 import { useInput } from "../../../utils/hooks";
 import { Toast, KIND } from "baseui/toast";
-import { withStyle } from "styletron-react";
 import { getLinks, saveLink } from "../../../services/api";
 
 import { listContent } from "../../../constants";
 
-import { styled } from "baseui";
-import {
-  StyledTable,
-  StyledHead,
-  StyledHeadCell,
-  StyledBody,
-  StyledRow,
-  StyledCell
-} from "baseui/table";
 import { Block } from "baseui/block";
 import { Button } from "baseui/button";
 import { Input, SIZE } from "baseui/input";
-import { Link } from "react-router-dom";
-
-const CustomRow = withStyle(StyledRow, ({ $theme }) => ({
-  position: "relative",
-  ":hover": {
-    background: $theme.colors.primary50,
-    cursor: "pointer"
-  }
-}));
-
-const RowLink = styled(Link, {
-  position: "absolute",
-  width: "100%",
-  height: "100%"
-});
-
-const CellLink = styled("a", {
-  zIndex: "1",
-  position: "relative"
-});
+import { H2 } from "baseui/typography";
 
 function List() {
+  const isAuthentificated = useContext(AuthContext);
   const [listLinks, setListLinks] = useState([]);
   const [status, setStatus] = useState("");
   const [isReqError, setIsReqError] = useState(false);
@@ -89,7 +63,6 @@ function List() {
       setIsReqError(false);
       setStatus(status);
       setListLinks(data);
-
     })();
   }, []);
   // TODO improve of notifications
@@ -133,27 +106,13 @@ function List() {
         </Toast>
       </Block>
       <Block margin={"1.5em 0"}>
-        <StyledTable>
-          <StyledHead>
-            {tableTitles.map((title, index) => (
-              <StyledHeadCell key={`${index}-head`}>{title}</StyledHeadCell>
-            ))}
-          </StyledHead>
-          <StyledBody>
-            {listLinks.map((item, index) => (
-              <CustomRow key={`${item._id}-row`}>
-                <RowLink className={"link-info"} to={`/links/${item._id}`}/>
-                <StyledCell>{index + 1}</StyledCell>
-                <StyledCell>{item.hash}</StyledCell>
-                <StyledCell>
-                  <CellLink href={item.link} title={item.link}>
-                    {item.link}
-                  </CellLink>
-                </StyledCell>
-              </CustomRow>
-            ))}
-          </StyledBody>
-        </StyledTable>
+        {!isAuthentificated ? (
+          <LinksTable headTitles={tableTitles} bodyRows={listLinks}/>
+        ) : (
+          <Block>
+            <H2>Not autorized!</H2>
+          </Block>
+        )}
       </Block>
     </React.Fragment>
   );
