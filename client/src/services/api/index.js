@@ -1,2 +1,2 @@
-export { getLinks, getLinkInfo, saveLink } from "./links";
-export { handleLogin } from "./auth";
+export * from "./links";
+export *  from "./auth";

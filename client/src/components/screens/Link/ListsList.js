@@ -13,7 +13,7 @@ import { Input, SIZE } from "baseui/input";
 import { H2 } from "baseui/typography";
 
 function ListsList() {
-  const isAuthentificated = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
   const [listLinks, setListLinks] = useState([]);
   const [status, setStatus] = useState("");
   const [isReqError, setIsReqError] = useState(false);
@@ -106,7 +106,7 @@ function ListsList() {
         </Toast>
       </Block>
       <Block margin={"1.5em 0"}>
-        {isAuthentificated ? (
+        {isAuthenticated ? (
           <LinksTable headTitles={tableTitles} bodyRows={listLinks}/>
         ) : (
           <Block>
