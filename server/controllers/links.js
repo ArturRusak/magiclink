@@ -25,26 +25,25 @@ function getLinkByParam(param) {
  */
 function addLink(link) {
   //before of saving search the same link and hash
-  return getLinkByParam({ link: link.link })
-    .then(checkedLink => {
-      if (!checkedLink) {
-
-        let hash = null;
-        let uniqueHash = null;
-        while (uniqueHash) {
-          //Create and check the same hash
-          hash = md5(link.link);
-          (async function () {
-            uniqueHash = await getLinkByParam({hash});
-          })();
-        }
-
-        return linksModel.addLink({ ...link, hash });
-
-      } else {
-        return Promise.reject("The link already saved!");
+  return getLinkByParam({link: link.link}).then(checkedLink => {
+    if (!checkedLink) {
+      let hash = null;
+      let uniqueHash = null;
+      while (uniqueHash) {
+        //Create and check the same hash
+        hash = md5(link.link);
+        (async function () {
+          uniqueHash = await getLinkByParam({hash})
+        })();
       }
-    })
+
+      return linksModel.addLink({...link, hash});
+    } else {
+      return Promise.reject("The link already saved!");
+
+      ;
+    }
+  );
 }
 
 module.exports = {
