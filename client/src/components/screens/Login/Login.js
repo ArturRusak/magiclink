@@ -16,8 +16,6 @@ export default function Login() {
 
     (async function () {
       await handleLogin({login, password});
-      resetLogin();
-      resetPassword();
     })();
   }
 
