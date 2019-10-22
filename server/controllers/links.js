@@ -1,4 +1,4 @@
-const { linksModel } = require("../DAO");
+const {linksModel} = require("../DAO");
 const md5 = require("md5");
 
 /**
@@ -40,10 +40,8 @@ function addLink(link) {
       return linksModel.addLink({...link, hash});
     } else {
       return Promise.reject("The link already saved!");
-
-      ;
     }
-  );
+  });
 }
 
 module.exports = {
