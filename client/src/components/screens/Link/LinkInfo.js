@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { settingsAPI } from "../../../constants";
+import { getLinkInfo } from "../../../services/api";
 import { Block } from "baseui/block";
 import {
   StyledTable,
@@ -19,18 +19,22 @@ export default function LinkInfo({ match }) {
   const [link, setLink] = useState({});
 
   useEffect(() => {
-    fetch(`${settingsAPI.API}/links/${linkID}`)
-      .then(response => response.json())
-      .then(({ data, status }) => {
-        setIsReqError(false);
-        setStatus(status);
-        setLink(data);
-      })
-      .catch(error => {
+    (async function() {
+      const responseBody = await getLinkInfo(linkID);
+      const isError = responseBody instanceof Error;
+
+      if (isError) {
         setIsReqError(true);
-        setStatus(`${error}`);
+        setStatus(`${responseBody}`);
         setLink({});
-      });
+        return;
+      }
+
+      const { data, status } = responseBody;
+      setIsReqError(false);
+      setStatus(status);
+      setLink(data);
+    })();
   }, [linkID]);
 
   const headTitles = () =>
