@@ -1,11 +1,22 @@
 import { useState } from "react";
 
 export function useInput(initialValue) {
-  const [value, setValue] = useState(initialValue);
+  const [state, setState] = useState(initialValue);
 
-  return [
-    value, //current state
-    () => setValue(''), //reset state
-    event => setValue(event.target.value) // change value of input
-  ]
+  return {
+    inputValues: state,
+    reset: () => setState(initialValue), //reset state
+    setInputValues: event => {
+      event.persist();
+      setState(prevState => {
+        return {
+          ...prevState,
+          inputValues: {
+            ...prevState.inputValues,
+            [event.target.name]: event.target.value
+          }
+        };
+      });
+    } // change value of input
+  };
 }

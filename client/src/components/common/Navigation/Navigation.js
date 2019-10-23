@@ -31,7 +31,7 @@ const StyledNavLink = styled(NavLink, ({ $theme }) => ({
 
 export default function Navigation() {
   const { isAuthenticated, logOut } = useContext(AuthContext);
-
+  console.log(isAuthenticated);
   return (
     <Block maxWidth={"1280px"} margin={"0 auto"}>
       <nav>

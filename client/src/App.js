@@ -31,14 +31,20 @@ export default function() {
         }
 
         return Promise.reject(error);
-      });
+      }
+    );
   }, []);
 
   return (
     <BrowserRouter>
       <App className="App">
-        <Header/>
-        <AuthProvider value={{ isAuthenticated: isAuthenticated, logOut: () => setIsAuthenticated(false) }}>
+        <AuthProvider
+          value={{
+            isAuthenticated: isAuthenticated,
+            logOut: () => setIsAuthenticated(false)
+          }}
+        >
+          <Header/>
           <Router/>
         </AuthProvider>
         <Footer/>
