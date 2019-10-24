@@ -7,17 +7,15 @@ import { Block } from "baseui/block";
 import { useInput } from "../../../utils/hooks";
 
 export default function Login() {
-  //TODO replace several constants to one - need to use one state for except extra code
 
   const defaultState = {
     inputValues: { login: "", password: "" }
   };
   const { inputValues, setInputValues } = useInput(defaultState);
-  const { login, password } = inputValues;
+  const { login, password } = inputValues.inputValues;
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(inputValues, "----")
     (async function() {
       await handleLogin({ login, password });
     })();
