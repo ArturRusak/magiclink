@@ -1,5 +1,10 @@
 import { useState } from "react";
 
+/**
+ *
+ * @param initialValue
+ * @returns {{setInputValues: setInputValues, reset: (function(): void), inputValues: any}}
+ */
 export function useInput(initialValue) {
   const [state, setState] = useState(initialValue);
 

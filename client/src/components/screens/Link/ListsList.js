@@ -13,12 +13,21 @@ import { Input, SIZE } from "baseui/input";
 import { H2 } from "baseui/typography";
 
 function ListsList() {
+  const defaultInputValue = {
+    inputValues: {
+      linkInput: ""
+    },
+    listLinks: [],
+    status: null,
+    isError: false
+  };
   const { isAuthenticated } = useContext(AuthContext);
-  const [listLinks, setListLinks] = useState([]);
-  const [status, setStatus] = useState("");
-  const [isReqError, setIsReqError] = useState(false);
+  const [state, setState] = useState(defaultInputValue);
+  const { inputValues: value, reset, setInputValues: onChange } = useInput(
+    defaultInputValue
+  );
 
-  const [value, reset, onChange] = useInput("");
+  const { isError, listLinks, status } = state;
   const { tableTitles } = listContent;
 
   function handleSubmit(e) {
@@ -28,21 +37,30 @@ function ListsList() {
       const isError = responseBody instanceof Error;
 
       if (isError) {
-        setIsReqError(true);
-        setStatus(`${responseBody}`);
+        setState(prevState => ({
+          ...prevState,
+          isError: true,
+          status: responseBody.toString()
+        }));
         return;
       }
 
       const { data, status } = responseBody;
 
       if (typeof data === "string") {
-        setIsReqError(true);
-        setStatus(`Error: ${data}`);
+        setState(prevState => ({
+          ...prevState,
+          isError: true,
+          status: `Error: ${data}`
+        }));
         return;
       }
-      setStatus(status);
-      setIsReqError(false);
-      setListLinks([...listLinks, data]);
+      setState(prevState => ({
+        ...prevState,
+        listLinks: [...prevState.links, data],
+        isError: false,
+        status: status
+      }));
       reset();
     })();
   }
@@ -53,45 +71,35 @@ function ListsList() {
       const isError = responseBody instanceof Error;
 
       if (isError) {
-        setIsReqError(true);
-        setStatus(`${responseBody}`);
-        setListLinks([]);
+        setState(prevState => {
+          return {
+            ...prevState,
+            listLinks: [],
+            isError: true,
+            status: responseBody.toString()
+          };
+        });
         return;
       }
 
       const { data, status } = responseBody;
-      setIsReqError(false);
-      setStatus(status);
-      setListLinks(data);
+      setState(prevState => ({
+        ...prevState,
+        listLinks: data,
+        isError: false,
+        status: status
+      }));
     })();
   }, []);
   // TODO improve of notifications
   return (
     <React.Fragment>
       <h1>Magic Links</h1>
-      <Block
-        display={"flex"}
-        maxWidth={"35em"}
-        padding={"0.3em"}
-        margin={"1.5em auto"}
-        backgroundColor={"#dadada"}
-      >
-        <Input
-          type={"text"}
-          size={SIZE.large}
-          placeholder={"Input link"}
-          onChange={event => onChange(event)}
-          value={value}
-        />
-        <Button onClick={e => handleSubmit(e)} type={"submit"}>
-          Save
-        </Button>
-      </Block>
       <Block>
         <Toast
           autoHideDuration={3000}
           key={status}
-          kind={isReqError ? KIND.warning : KIND.positive}
+          kind={isError ? KIND.warning : KIND.positive}
           overrides={{
             Body: {
               style: {
@@ -107,7 +115,28 @@ function ListsList() {
       </Block>
       <Block margin={"1.5em 0"}>
         {isAuthenticated ? (
-          <LinksTable headTitles={tableTitles} bodyRows={listLinks}/>
+          <React.Fragment>
+            <Block
+              display={"flex"}
+              maxWidth={"35em"}
+              padding={"0.3em"}
+              margin={"1.5em auto"}
+              backgroundColor={"#dadada"}
+            >
+              <Input
+                type={"text"}
+                size={SIZE.large}
+                placeholder={"Input link"}
+                name={"linkInput"}
+                onChange={event => onChange(event)}
+                value={value.linkInput}
+              />
+              <Button onClick={e => handleSubmit(e)} type={"submit"}>
+                Save
+              </Button>
+            </Block>
+            <LinksTable headTitles={tableTitles} bodyRows={listLinks}/>
+          </React.Fragment>
         ) : (
           <Block>
             <H2>Not autorized!</H2>
