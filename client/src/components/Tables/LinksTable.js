@@ -31,7 +31,6 @@ const CellLink = styled("a", {
 });
 
 function LinksTable({ headTitles, bodyRowsData }) {
-  console.log(bodyRowsData.length, bodyRowsData);
   return (
     <StyledTable>
       <StyledHead>
