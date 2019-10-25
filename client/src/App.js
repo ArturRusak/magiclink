@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 
 import { styled } from "baseui";
 import { BrowserRouter } from "react-router-dom";
@@ -20,6 +20,7 @@ export default function() {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
+    console.log("effect");
     axios.interceptors.response.use(
       response => {
         setIsAuthenticated(true);
@@ -34,16 +35,18 @@ export default function() {
       }
     );
   }, []);
-
+  const memoValue = useMemo(
+    () => ({
+      isAuthenticated: isAuthenticated,
+      logOut: () => setIsAuthenticated(false)
+    }),
+    [isAuthenticated]
+  );
+  console.log("render");
   return (
     <BrowserRouter>
       <App className="App">
-        <AuthProvider
-          value={{
-            isAuthenticated: isAuthenticated,
-            logOut: () => setIsAuthenticated(false)
-          }}
-        >
+        <AuthProvider value={memoValue}>
           <Header/>
           <Router/>
         </AuthProvider>
