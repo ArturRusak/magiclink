@@ -135,7 +135,7 @@ function ListsList() {
                 Save
               </Button>
             </Block>
-            <LinksTable headTitles={tableTitles} bodyRows={listLinks}/>
+            <LinksTable headTitles={tableTitles} bodyRowsData={listLinks}/>
           </React.Fragment>
         ) : (
           <Block>
