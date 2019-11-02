@@ -9,21 +9,26 @@ import { useInput } from "../../../utils/hooks";
 export default function Login() {
 
   const defaultState = {
-    inputValues: { login: "", password: "" }
+    inputValues: {login: "", password: ""}
   };
-  const { inputValues, setInputValues } = useInput(defaultState);
-  const { login, password } = inputValues.inputValues;
+  const {inputValues, setInputValues} = useInput(defaultState);
+  const {login, password} = inputValues.inputValues;
   const [isLoading, setIsLoading] = useState(false);
-
-  const querySignIn = async () => {
-    await handleLogin({login, password});
-    setIsLoading(false);
-  };
+  const [isErrorLogin, setIsErrorLogin] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    querySignIn();
+    setTimeout(() => {
+      (async () => {
+        const response = await handleLogin({login, password});
+        const isError = response instanceof Error;
+        if (isError) {
+          setIsErrorLogin(true);
+          setIsLoading(false)
+        }
+      })();
+    }, 1000)
   };
 
   return (
@@ -31,6 +36,7 @@ export default function Login() {
       <Block maxWidth={"40em"} margin={"2em auto 0"}>
         <Block marginBottom={"1em"}>
           <Input
+            error={isErrorLogin}
             type={"text"}
             size={SIZE.compact}
             placeholder={"Login"}
@@ -41,6 +47,7 @@ export default function Login() {
         </Block>
         <Block marginBottom={"1.5em"}>
           <Input
+            error={isErrorLogin}
             type={"password"}
             size={SIZE.compact}
             placeholder={"Password"}
