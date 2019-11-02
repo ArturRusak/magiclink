@@ -19,16 +19,14 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-      (async () => {
-        const response = await handleLogin({login, password});
-        const isError = response instanceof Error;
-        if (isError) {
-          setIsErrorLogin(true);
-          setIsLoading(false)
-        }
-      })();
-    }, 1000)
+    (async () => {
+      const response = await handleLogin({login, password});
+      const isError = response instanceof Error;
+      if (isError) {
+        setIsErrorLogin(true);
+        setIsLoading(false)
+      }
+    })();
   };
 
   return (
