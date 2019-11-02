@@ -7,6 +7,7 @@ import { getLinks, saveLink } from "../../../services/api";
 
 import { listContent } from "../../../constants";
 
+import { Spinner } from "baseui/spinner";
 import { Block } from "baseui/block";
 import { Button } from "baseui/button";
 import { Input, SIZE } from "baseui/input";
@@ -22,6 +23,7 @@ function ListsList() {
     isError: false
   };
   const { isAuthenticated } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(true);
   const [state, setState] = useState(defaultInputValue);
   const { inputValues: value, reset, setInputValues: onChange } = useInput(
     defaultInputValue
@@ -79,6 +81,7 @@ function ListsList() {
             status: responseBody.toString()
           };
         });
+        setIsLoading(false);
         return;
       }
 
@@ -89,60 +92,66 @@ function ListsList() {
         isError: false,
         status: status
       }));
+      setIsLoading(false);
     })();
   }, []);
   // TODO improve of notifications
   return (
     <React.Fragment>
       <h1>Magic Links</h1>
-      <Block>
-        <Toast
-          autoHideDuration={3000}
-          key={status}
-          kind={isError ? KIND.warning : KIND.positive}
-          overrides={{
-            Body: {
-              style: {
-                position: "fixed",
-                bottom: "2em",
-                right: "2em"
-              }
-            }
-          }}
-        >
-          {status}
-        </Toast>
-      </Block>
-      <Block margin={"1.5em 0"}>
-        {isAuthenticated ? (
-          <React.Fragment>
-            <Block
-              display={"flex"}
-              maxWidth={"35em"}
-              padding={"0.3em"}
-              margin={"1.5em auto"}
-              backgroundColor={"#dadada"}
-            >
-              <Input
-                type={"text"}
-                size={SIZE.large}
-                placeholder={"Input link"}
-                name={"linkInput"}
-                onChange={event => onChange(event)}
-                value={value.linkInput}
-              />
-              <Button onClick={e => handleSubmit(e)} type={"submit"}>
-                Save
-              </Button>
-            </Block>
-            <LinksTable headTitles={tableTitles} bodyRowsData={listLinks}/>
-          </React.Fragment>
-        ) : (
+      {isLoading ?
+        <Spinner/> :
+        <React.Fragment>
           <Block>
-            <H2>Not autorized!</H2>
+            <Toast
+              autoHideDuration={3000}
+              key={status}
+              kind={isError ? KIND.warning : KIND.positive}
+              overrides={{
+                Body: {
+                  style: {
+                    position: "fixed",
+                    bottom: "2em",
+                    right: "2em"
+                  }
+                }
+              }}
+            >
+              {status}
+            </Toast>
           </Block>
-        )}
-      </Block>
+          <Block margin={"1.5em 0"}>
+            {isAuthenticated ? (
+              <React.Fragment>
+                <Block
+                  display={"flex"}
+                  maxWidth={"35em"}
+                  padding={"0.3em"}
+                  margin={"1.5em auto"}
+                  backgroundColor={"#dadada"}
+                >
+                  <Input
+                    type={"text"}
+                    size={SIZE.large}
+                    placeholder={"Input link"}
+                    name={"linkInput"}
+                    onChange={event => onChange(event)}
+                    value={value.linkInput}
+                  />
+                  <Button onClick={e => handleSubmit(e)} type={"submit"}>
+                    Save
+                  </Button>
+                </Block>
+                <LinksTable headTitles={tableTitles} bodyRowsData={listLinks}/>
+              </React.Fragment>
+            ) : (
+              <Block>
+                <H2>Not autorized!</H2>
+              </Block>
+            )}
+          </Block>
+        </React.Fragment>
+      }
     </React.Fragment>
   );
 }

@@ -13,13 +13,18 @@ export default function Login() {
   };
   const { inputValues, setInputValues } = useInput(defaultState);
   const { login, password } = inputValues.inputValues;
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleSubmit(e) {
+  const querySignIn = async () => {
+    await handleLogin({login, password});
+    setIsLoading(false);
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    (async function() {
-      await handleLogin({ login, password });
-    })();
-  }
+    setIsLoading(true);
+    querySignIn();
+  };
 
   return (
     <React.Fragment>
@@ -48,6 +53,7 @@ export default function Login() {
           kind={KIND.secondary}
           type={"submit"}
           onClick={event => handleSubmit(event)}
+          isLoading={isLoading}
         >
           Login
         </Button>
