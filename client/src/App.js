@@ -24,7 +24,6 @@ export default function () {
 
       axios.interceptors.response.use(
         response => {
-          console.log(response, '----------')
           setIsAuthenticated(true);
           return response;
         },
