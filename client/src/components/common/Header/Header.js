@@ -38,7 +38,7 @@ const StyledHeaderLinkSpan = styled("span", () => ({
   margin: "0 0 0 0.5em"
 }));
 
-const StyledWelkomeUser = styled("div", ({$theme}) => ({
+const StyledHelloUser = styled("div", ({$theme}) => ({
   ...$theme.typography.font400,
   position: 'absolute',
   top: $theme.sizing.scale700,
@@ -56,7 +56,7 @@ export default function () {
           <StyledHeaderLinkSpan>{commonContent.NAME_PROJECT}</StyledHeaderLinkSpan>
         </StyledHeaderRouterLink>
       </StyledHeaderContainer>
-      {currentUser && <StyledWelkomeUser>{`Welkome, ${currentUser}!`}</StyledWelkomeUser>}
+      {currentUser && <StyledHelloUser>{`Hello, ${currentUser}!`}</StyledHelloUser>}
       <Navigation/>
     </StyledHeader>
   );
