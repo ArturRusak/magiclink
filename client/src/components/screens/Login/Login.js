@@ -9,10 +9,11 @@ import { useInput } from "../../../utils/hooks";
 export default function Login() {
 
   const defaultState = {
-    inputValues: {login: "", password: ""}
+    login: "",
+    password: ""
   };
   const {inputValues, setInputValues} = useInput(defaultState);
-  const {login, password} = inputValues.inputValues;
+  const {login, password} = inputValues;
   const [isLoading, setIsLoading] = useState(false);
   const [isErrorLogin, setIsErrorLogin] = useState(false);
 

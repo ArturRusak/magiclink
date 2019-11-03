@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext, LinksTable } from "../../";
 
 import { useInput } from "../../../utils/hooks";
-import { Toast, KIND } from "baseui/toast";
+import { KIND, Toast } from "baseui/toast";
 import { getLinks, saveLink } from "../../../services/api";
 
 import { listContent } from "../../../constants";
@@ -13,84 +13,89 @@ import { Button } from "baseui/button";
 import { Input, SIZE } from "baseui/input";
 import { H2 } from "baseui/typography";
 
-function ListsList() {
-  const defaultInputValue = {
-    inputValues: {
-      linkInput: ""
-    },
-    listLinks: [],
-    status: null,
-    isError: false
-  };
-  const { isAuthenticated } = useContext(AuthContext);
+function LinksList() {
+  const {isAuthenticated} = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [state, setState] = useState(defaultInputValue);
-  const { inputValues: value, reset, setInputValues: onChange } = useInput(
-    defaultInputValue
+  const [listLinks, setListLinks] = useState([]);
+  const [status, setStatus] = useState(null);
+  const [isErrors, setIsErrors] = useState({
+    isInputError: false,
+    isLoadingError: false
+  });
+  const {inputValues, reset, setInputValues: onChange} = useInput(
+    {
+      linkInput: ""
+    }
   );
 
-  const { isError, listLinks, status } = state;
-  const { tableTitles } = listContent;
+  const {tableTitles} = listContent;
 
   function handleSubmit(e) {
     e.preventDefault();
-    (async function() {
-      const responseBody = await saveLink(value);
+
+    if (!inputValues.linkInput.length) {
+      return setIsErrors(prevState => ({
+        ...prevState,
+        isInputError: true
+      }));
+    }
+
+    (async function () {
+      const responseBody = await saveLink(inputValues.linkInput);
       const isError = responseBody instanceof Error;
 
       if (isError) {
-        setState(prevState => ({
+        setStatus(responseBody.toString());
+        setIsErrors(prevState => ({
           ...prevState,
-          isError: true,
-          status: responseBody.toString()
+          isLoadingError: true
         }));
         return;
       }
 
-      const { data, status } = responseBody;
+      const {data, status} = responseBody;
 
       if (typeof data === "string") {
-        setState(prevState => ({
+        setStatus(`Error: ${data}`);
+        setIsErrors(prevState => ({
           ...prevState,
-          isError: true,
-          status: `Error: ${data}`
+          isLoadingError: true
         }));
         return;
       }
-      setState(prevState => ({
+      setListLinks(prevState => [...prevState, data]);
+      setStatus(status);
+      setIsErrors(prevState => ({
         ...prevState,
-        listLinks: [...prevState.links, data],
-        isError: false,
-        status: status
+        isLoadingError: false
       }));
       reset();
     })();
   }
 
   useEffect(() => {
-    (async function() {
+    (async function () {
       const responseBody = await getLinks();
       const isError = responseBody instanceof Error;
 
       if (isError) {
-        setState(prevState => {
-          return {
-            ...prevState,
-            listLinks: [],
-            isError: true,
-            status: responseBody.toString()
-          };
-        });
+        setListLinks([]);
+        setStatus(responseBody.toString());
+        setIsErrors(prevState => ({
+          ...prevState,
+          isLoadingError: true
+        }));
         setIsLoading(false);
         return;
       }
 
-      const { data, status } = responseBody;
-      setState(prevState => ({
+      const {data, status} = responseBody;
+
+      setListLinks(data);
+      setStatus(status);
+      setIsErrors(prevState => ({
         ...prevState,
-        listLinks: data,
-        isError: false,
-        status: status
+        isLoadingError: false
       }));
       setIsLoading(false);
     })();
@@ -106,7 +111,7 @@ function ListsList() {
             <Toast
               autoHideDuration={3000}
               key={status}
-              kind={isError ? KIND.warning : KIND.positive}
+              kind={isErrors.isLoadingError ? KIND.warning : KIND.positive}
               overrides={{
                 Body: {
                   style: {
@@ -131,12 +136,13 @@ function ListsList() {
                   backgroundColor={"#dadada"}
                 >
                   <Input
+                    error={isErrors.isInputError}
                     type={"text"}
                     size={SIZE.large}
                     placeholder={"Input link"}
                     name={"linkInput"}
                     onChange={event => onChange(event)}
-                    value={value.linkInput}
+                    value={inputValues.linkInput}
                   />
                   <Button onClick={e => handleSubmit(e)} type={"submit"}>
                     Save
@@ -156,4 +162,4 @@ function ListsList() {
   );
 }
 
-export default ListsList;
+export default LinksList;

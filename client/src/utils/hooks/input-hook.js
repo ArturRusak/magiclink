@@ -16,10 +16,7 @@ export function useInput(initialValue) {
       setState(prevState => {
         return {
           ...prevState,
-          inputValues: {
-            ...prevState.inputValues,
-            [event.target.name]: event.target.value
-          }
+          [event.target.name]: event.target.value
         };
       });
     } // change value of input

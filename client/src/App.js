@@ -18,6 +18,7 @@ export default function () {
   // using the state in the component for except unnecessary renders
   // of providers children
 
+  //TODO fix the AUTH loading web-site when start with page without query
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const memoValue = useMemo(
     () => {
