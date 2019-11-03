@@ -26,7 +26,7 @@ export default function () {
     () => {
 
       axios.interceptors.response.use(
-        response => {
+        response => { // TODO optimization of renderers, need depending in memo for one variable
           setIsAuthenticated(true);
           setCurrentUser(response.data.currentUser);
           return response;
