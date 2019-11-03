@@ -30,7 +30,7 @@ const CellLink = styled("a", {
   position: "relative"
 });
 
-function LinksTable({headTitles, bodyRows}) {
+function LinksTable({ headTitles, bodyRowsData }) {
   return (
     <StyledTable>
       <StyledHead>
@@ -39,14 +39,14 @@ function LinksTable({headTitles, bodyRows}) {
         ))}
       </StyledHead>
       <StyledBody>
-        {bodyRows.map((item, index) => (
+        {bodyRowsData.map((item, index) => (
           <CustomRow key={`${item._id}-row`}>
             <RowLink className={"link-info"} to={`/links/${item._id}`}/>
             <StyledCell>{index + 1}</StyledCell>
             <StyledCell>{item.hash}</StyledCell>
             <StyledCell>
               <CellLink href={item.link} title={item.link}>
-                {item.link}
+                {`${item.link}`}
               </CellLink>
             </StyledCell>
           </CustomRow>
@@ -54,6 +54,6 @@ function LinksTable({headTitles, bodyRows}) {
       </StyledBody>
     </StyledTable>
   );
-};
+}
 
 export default LinksTable;

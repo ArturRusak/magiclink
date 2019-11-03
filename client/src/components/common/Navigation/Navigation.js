@@ -31,7 +31,6 @@ const StyledNavLink = styled(NavLink, ({ $theme }) => ({
 
 export default function Navigation() {
   const { isAuthenticated, logOut } = useContext(AuthContext);
-
   return (
     <Block maxWidth={"1280px"} margin={"0 auto"}>
       <nav>
@@ -44,7 +43,7 @@ export default function Navigation() {
           </StyledNavItem>
           <StyledNavItem>
             {isAuthenticated ? (
-              <StyledNavLink $as={"div"} onClick={handleLogOut(logOut)} role={"button"}>
+              <StyledNavLink $as={"div"} onClick={() => handleLogOut(logOut)} role={"button"}>
                 Sign out
               </StyledNavLink>
             ) : (
