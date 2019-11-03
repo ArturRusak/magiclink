@@ -3,10 +3,9 @@
 const Koa = require("koa");
 const cors = require("@koa/cors");
 const serve = require("koa-static");
-const morgan = require("koa-morgan");
 const bodyParser = require("koa-bodyparser");
 const path = require("path");
-const route = require("./routes");
+const router = require("./routes");
 const { DAO } = require("./DAO");
 const { initPassport } = require("./auth");
 
@@ -38,7 +37,7 @@ initPassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(route.routes());
+app.use(router.routes());
 
 dao.connect(() => {
   /* const initData = [

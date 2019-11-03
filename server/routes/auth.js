@@ -10,14 +10,17 @@ router
   .post(
     "/login",
     passport.authenticate("local"),
-    async ctx => ctx.status = 200
+    async ctx => (ctx.status = 200)
   )
-  .get("/logout", async (ctx) => {
+  .get("/logout", async ctx => {
     if (ctx.isAuthenticated()) {
       ctx.logout();
       ctx.status = 200;
     } else {
-      ctx.body = { success: false };
+      ctx.body = {
+        ...ctx.body,
+        success: false
+      };
       ctx.throw(401);
     }
   })
@@ -25,12 +28,14 @@ router
     await saveUser(ctx.request.body)
       .then(user => {
         ctx.body = {
+          ...ctx.body,
           status: "success",
           data: user
         };
       })
       .catch(error => {
         ctx.body = {
+          ...ctx.body,
           status: "error",
           data: error
         };
