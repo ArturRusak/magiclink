@@ -33,7 +33,7 @@ function addLink(link) {
         //Create and check the same hash
         hash = md5(link.link);
         (async function () {
-          uniqueHash = await getLinkByParam({hash})
+          uniqueHash = await getLinkByParam({hash});
         })();
       }
 

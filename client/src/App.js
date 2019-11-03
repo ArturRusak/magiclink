@@ -20,28 +20,33 @@ export default function () {
 
   //TODO fix the AUTH loading web-site when start with page without query
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+
   const memoValue = useMemo(
     () => {
 
       axios.interceptors.response.use(
         response => {
           setIsAuthenticated(true);
+          setCurrentUser(response.data.currentUser);
           return response;
         },
         error => {
           if (error.response.status === 401) {
             setIsAuthenticated(false);
+            setCurrentUser(null);
           }
 
           return Promise.reject(error);
         }
       );
       return {
+        currentUser,
         isAuthenticated: isAuthenticated,
         logOut: () => setIsAuthenticated(false)
       }
     },
-    [isAuthenticated]
+    [isAuthenticated, currentUser]
   );
   console.log("render");
   return (
