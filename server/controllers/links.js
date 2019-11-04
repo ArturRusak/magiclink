@@ -1,4 +1,4 @@
-const { linksModel } = require("../DAO");
+const {linksModel} = require("../DAO");
 const md5 = require("md5");
 
 /**
@@ -24,28 +24,24 @@ function getLinkByParam(param) {
  * @returns {Promise<any>}
  */
 function addLink(link) {
-  let hash = "";
   //before of saving search the same link and hash
-  return getLinkByParam({ link: link.link })
-    .then(foundLink => {
-      if (!foundLink) {
+  return getLinkByParam({link: link.link}).then(checkedLink => {
+    if (!checkedLink) {
+      let hash = null;
+      let uniqueHash = null;
+      while (uniqueHash) {
+        //Create and check the same hash
         hash = md5(link.link);
-        return getLinkByParam({ hash });
-      } else {
-        throw "The link already saved!";
+        (async function () {
+          uniqueHash = await getLinkByParam({hash});
+        })();
       }
-    })
-    .then(foundHash => {
-      if (!foundHash) {
-        return linksModel.addLink({ ...link, hash });
-      } else {
-        //TODO fix search of duplicate HASH
-        while (!foundHash) {
-          hash = md5(link.hash);
-          return getLinkByParam({ hash: "0800fc577294c34e0b28ad2839435945" });
-        }
-      }
-    });
+
+      return linksModel.addLink({...link, hash});
+    } else {
+      return Promise.reject("The link already saved!");
+    }
+  });
 }
 
 module.exports = {

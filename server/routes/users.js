@@ -10,12 +10,14 @@ router
     await getUsers()
       .then(links => {
         ctx.body = {
+          ...ctx.body,
           status: "success",
           data: links
         };
       })
       .catch(error => {
         ctx.body = {
+          ...ctx.body,
           status: "error",
           data: error
         };
@@ -25,12 +27,14 @@ router
     await findUserByID(ctx.params.id)
       .then(user => {
         ctx.body = {
+          ...ctx.body,
           status: "success",
           data: user
         };
       })
       .catch(error => {
         ctx.body = {
+          ...ctx.body,
           status: "error",
           data: error
         };
@@ -40,12 +44,14 @@ router
     await saveUser(ctx.request.body)
       .then(item => {
         ctx.body = {
+          ...ctx.body,
           status: "success",
           data: item
         };
       })
       .catch(error => {
         ctx.body = {
+          ...ctx.body,
           status: "error",
           data: error
         };

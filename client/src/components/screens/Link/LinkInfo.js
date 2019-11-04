@@ -1,36 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { settingsAPI } from "../../../constants";
+import { getLinkInfo } from "../../../services/api";
 import { Block } from "baseui/block";
-import {
-  StyledTable,
-  StyledHead,
-  StyledHeadCell,
-  StyledBody,
-  StyledRow,
-  StyledCell
-} from "baseui/table";
-
+import { StyledBody, StyledCell, StyledHead, StyledHeadCell, StyledRow, StyledTable } from "baseui/table";
+import { Spinner } from "baseui/spinner";
 import { KIND, Toast } from "baseui/toast";
 
-export default function LinkInfo({ match }) {
+export default function LinkInfo({match}) {
   const linkID = match.params.linkId;
+  const [isLoading, setIsLoading] = useState(true);
   const [isReqError, setIsReqError] = useState(false);
   const [status, setStatus] = useState("");
   const [link, setLink] = useState({});
 
   useEffect(() => {
-    fetch(`${settingsAPI.API}/links/${linkID}`)
-      .then(response => response.json())
-      .then(({ data, status }) => {
-        setIsReqError(false);
-        setStatus(status);
-        setLink(data);
-      })
-      .catch(error => {
+    (async function () {
+      const responseBody = await getLinkInfo(linkID);
+      const isError = responseBody instanceof Error;
+      if (isError) {
         setIsReqError(true);
-        setStatus(`${error}`);
+        setStatus(`${responseBody}`);
         setLink({});
-      });
+        setIsLoading(false);
+        return;
+      }
+
+      const {data, status} = responseBody;
+      setIsReqError(false);
+      setStatus(status);
+      setLink(data);
+      setIsLoading(false);
+    })();
   }, [linkID]);
 
   const headTitles = () =>
@@ -47,32 +46,38 @@ export default function LinkInfo({ match }) {
       <Block margin={"1em 0"}>
         <h1>Links Info</h1>
       </Block>
-      <Block margin={"1em 0"}>
-        <Toast
-          autoHideDuration={3000}
-          key={status}
-          kind={isReqError ? KIND.warning : KIND.positive}
-          overrides={{
-            Body: {
-              style: {
-                position: "fixed",
-                bottom: "2em",
-                right: "2em"
-              }
-            }
-          }}
-        >
-          {status}
-        </Toast>
-      </Block>
-      <Block>
-        <StyledTable>
-          <StyledHead>{headTitles()}</StyledHead>
-          <StyledBody>
-            <StyledRow>{bodyCell()}</StyledRow>
-          </StyledBody>
-        </StyledTable>
-      </Block>
+      {
+        isLoading ?
+          <Spinner/> :
+          <React.Fragment>
+            <Block margin={"1em 0"}>
+              <Toast
+                autoHideDuration={3000}
+                key={status}
+                kind={isReqError ? KIND.warning : KIND.positive}
+                overrides={{
+                  Body: {
+                    style: {
+                      position: "fixed",
+                      bottom: "2em",
+                      right: "2em"
+                    }
+                  }
+                }}
+              >
+                {status}
+              </Toast>
+            </Block>
+            <Block>
+              <StyledTable>
+                <StyledHead>{headTitles()}</StyledHead>
+                <StyledBody>
+                  <StyledRow>{bodyCell()}</StyledRow>
+                </StyledBody>
+              </StyledTable>
+            </Block>
+          </React.Fragment>
+      }
     </React.Fragment>
   );
 }

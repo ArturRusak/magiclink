@@ -1,13 +1,24 @@
 import { useState } from "react";
 
+/**
+ *
+ * @param initialValue
+ * @returns {{setInputValues: setInputValues, reset: (function(): void), inputValues: any}}
+ */
 export function useInput(initialValue) {
-  const [value, setValue] = useState(initialValue);
+  const [state, setState] = useState(initialValue);
 
   return {
-    value,
-    reset: () => setValue(""),
-    onChange: event => {
-      setValue(event.target.value);
-    }
+    inputValues: state,
+    reset: () => setState(initialValue), //reset state
+    setInputValues: event => {
+      event.persist();
+      setState(prevState => {
+        return {
+          ...prevState,
+          [event.target.name]: event.target.value
+        };
+      });
+    } // change value of input
   };
 }

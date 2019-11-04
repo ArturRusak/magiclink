@@ -9,15 +9,16 @@ const { usersModel } = require("../DAO");
  */
 function saveUser(user) {
   let { password } = user;
-  const { userName } = user;
+  const {username} = user;
 
   return usersModel
-    .checkUser({ userName })
+    .checkUser({username})
     .then(foundUser => {
       if (!foundUser) {
         const salt = bcrypt.genSaltSync(10);
-        password = bcrypt.hashSync(password, salt);
-        return usersModel.saveUser({ password, ...user });
+        const hashPassword = bcrypt.hashSync(password, salt);
+
+        return usersModel.saveUser({ ...user, password: hashPassword });
       }
       return Promise.reject("The user already exists!");
     })

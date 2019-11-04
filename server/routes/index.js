@@ -5,13 +5,22 @@ const linkRoutes = require("./links");
 const userRoutes = require("./users");
 
 const Router = require("koa-router");
-const route = new Router();
+const router = new Router();
 
-route.get("/", async ctx => {
-  ctx.body = "Hello World!";
+router.use(authRouters.routes());
+
+router.use(async (ctx, next) => {
+  console.log(ctx.session.passport.user);
+  if (ctx.isAuthenticated()) {
+    ctx.body = {
+      ...ctx.body,
+      currentUser: ctx.session.passport.user ? ctx.session.passport.user : null
+    };
+  }
+  console.log(ctx.body);
+  await next();
 });
-route.use(authRouters.routes());
-route.use(linkRoutes.routes());
-route.use(userRoutes.routes());
+router.use(linkRoutes.routes());
+router.use(userRoutes.routes());
 
-module.exports = route;
+module.exports = router;

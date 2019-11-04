@@ -5,8 +5,10 @@ const cors = require("@koa/cors");
 const serve = require("koa-static");
 const bodyParser = require("koa-bodyparser");
 const path = require("path");
-const route = require("./routes");
+const router = require("./routes");
 const { DAO } = require("./DAO");
+const { initPassport } = require("./auth");
+
 const { data } = require("./data"); // eslint-disable-line no-unused-vars
 const config = require("./constants");
 
@@ -15,9 +17,7 @@ const session = require("koa-session");
 
 const dao = new DAO(config);
 const app = new Koa();
-const SESSION_CONFIG = {
-  maxAge: 2000
-};
+const SESSION_CONFIG = {};
 
 // sessions
 app.keys = ["super-secret-key"];
@@ -26,15 +26,18 @@ app.use(session(SESSION_CONFIG, app));
 // CORS
 app.use(cors());
 
+//logger
+//app.use(morgan('combined'));
+
 // eslint-disable-next-line no-undef
 app.use(serve(path.join(__dirname, "../client/build")));
 app.use(bodyParser());
 
-require("./auth")(passport);
+initPassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(route.routes());
+app.use(router.routes());
 
 dao.connect(() => {
   /* const initData = [
