@@ -18,7 +18,6 @@ export default function () {
   // using the state in the component for except unnecessary renders
   // of providers children
 
-  //TODO fix the AUTH loading web-site when start with page without query
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -27,6 +26,7 @@ export default function () {
 
       axios.interceptors.response.use(
         response => {
+          console.log(response.data)
           // TODO optimization of renderers, need depending in memo for one variable
           setIsAuthenticated(true);
           setCurrentUser(response.data.currentUser);

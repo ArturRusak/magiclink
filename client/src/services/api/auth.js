@@ -22,3 +22,9 @@ export function handleLogOut(callback) {
     })
     .catch(error => error);
 }
+
+export async function checkAuth() {
+  return axios.get('/check-auth')
+    .then(response => response)
+    .catch(error => error)
+}

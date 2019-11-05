@@ -1,7 +1,12 @@
-import React from "react";
+import React, {useEffect, useLayoutEffect} from "react";
 import { Block } from "baseui/block";
 
+import {checkAuth} from "../../../services/api";
+
 export default function Home() {
+  useEffect(() => {
+    checkAuth();
+  }, []);
   return (
     <React.Fragment>
       <Block>
