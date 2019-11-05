@@ -10,18 +10,16 @@ class LinksModel extends BaseModel {
    * Get all records
    * @returns {Promise<any>}
    */
-  getLinks() {
-    const { db, collectionName } = this;
-    return new Promise((resolve, reject) => {
-      db.collection(collectionName)
-        .find()
-        .toArray((error, results) => {
-          if (error) {
-            reject(error);
+  getLinks(user) {
+    const {db, collectionName} = this;
+    return db.collection(collectionName)
+      .aggregate([
+        {
+          $match: {
+            userID: user
           }
-          resolve(results);
-        });
-    });
+        }
+      ]).toArray()
   }
 
   /**
@@ -30,7 +28,7 @@ class LinksModel extends BaseModel {
    * @returns {Promise<any>}
    */
   getLinkByParam(param) {
-    const { db, collectionName } = this;
+    const {db, collectionName} = this;
     return new Promise((resolve, reject) => {
       db.collection(collectionName).findOne(param, (error, result) => {
         if (error) {
@@ -47,7 +45,7 @@ class LinksModel extends BaseModel {
    * @returns {Promise<any>}
    */
   addLink(newLink) {
-    const { db, collectionName } = this;
+    const {db, collectionName} = this;
     return new Promise((resolve, reject) => {
       db.collection(collectionName).insertOne(newLink, (error, result) => {
         if (error) {

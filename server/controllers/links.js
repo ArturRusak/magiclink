@@ -3,10 +3,11 @@ const md5 = require("md5");
 
 /**
  *
+ * @param {String} user - from the session
  * @returns {Promise<any>}
  */
-function getLinks() {
-  return linksModel.getLinks();
+function getLinks(user) {
+  return linksModel.getLinks(user);
 }
 
 /**

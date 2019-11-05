@@ -2,14 +2,16 @@
 
 const Router = require("koa-router");
 const ObjectId = require("mongodb").ObjectId;
-const { authenticated } = require("../auth");
-const { getLinks, getLinkByParam, addLink } = require("../controllers").links;
+const {authenticated} = require("../auth");
+const {getLinks, getLinkByParam, addLink} = require("../controllers").links;
 
 const router = new Router();
 
 router
   .get("/links", authenticated(), async ctx => {
-    await getLinks()
+    const {passport} = ctx.session;
+    const {user} = passport;
+    await getLinks(user)
       .then(links => {
         ctx.body = {
           ...ctx.body,
@@ -27,7 +29,7 @@ router
   })
   .get("/links/:id", async ctx => {
     const _id = new ObjectId(ctx.params.id);
-    await getLinkByParam({ _id })
+    await getLinkByParam({_id})
       .then(link => {
         ctx.body = {
           ...ctx.body,
