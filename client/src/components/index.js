@@ -10,6 +10,7 @@ export { default as LinksList } from "./screens/Link/LinksList";
 export { default as LinkInfo } from "./screens/Link/LinkInfo";
 export { default as Home } from "./screens/Home/Home";
 export { default as Login } from "./screens/Login/Login";
+export { default as Registration } from "./screens/Registration/Registration";
 
 /*Providers */
 export { default as AuthProvider, AuthContext } from "./Providers/AuthProvider";

@@ -7,14 +7,16 @@ import { Button, KIND } from "baseui/button";
 import { Block } from "baseui/block";
 import { useInput } from "../../../utils/hooks";
 
-export default function Login() {
+export default function Registration() {
 
   const defaultState = {
     login: "",
-    password: ""
+    email: "",
+    password: "",
+    confirmPassword: ""
   };
   const {inputValues, setInputValues} = useInput(defaultState);
-  const {login, password} = inputValues;
+  const {login, email, password, confirmPassword} = inputValues;
   const [isLoading, setIsLoading] = useState(false);
   const [isErrorLogin, setIsErrorLogin] = useState(false);
 
@@ -45,6 +47,17 @@ export default function Login() {
             value={login}
           />
         </Block>
+        <Block marginBottom={"1em"}>
+          <Input
+            error={isErrorLogin}
+            type={"email"}
+            size={SIZE.compact}
+            placeholder={"email"}
+            name={"email"}
+            onChange={event => setInputValues(event)}
+            value={email}
+          />
+        </Block>
         <Block marginBottom={"1.5em"}>
           <Input
             error={isErrorLogin}
@@ -55,17 +68,27 @@ export default function Login() {
             onChange={event => setInputValues(event)}
             value={password}
           />
-        </Block>
+        </Block> <Block marginBottom={"1.5em"}>
+        <Input
+          error={isErrorLogin}
+          type={"password"}
+          size={SIZE.compact}
+          placeholder={"Confirm password"}
+          name={"confirmPassword"}
+          onChange={event => setInputValues(event)}
+          value={confirmPassword}
+        />
+      </Block>
         <Button
           kind={KIND.secondary}
           type={"submit"}
           onClick={event => handleSubmit(event)}
           isLoading={isLoading}
         >
-          Login
+          Save
         </Button>
-        <NavLink to="/login">
-          Registration
+        <NavLink to="/home">
+          Sign in
         </NavLink>
       </Block>
     </React.Fragment>
