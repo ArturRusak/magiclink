@@ -12,19 +12,23 @@ class LinksModel extends BaseModel {
    */
   getLinks(user) {
     const {db, collectionName} = this;
-    return db.collection(collectionName)
-      .aggregate([
-        {
-          $match: {
-            userID: user
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName)
+        .find({userID: user})
+        .toArray((error, results) => {
+          if (error) {
+            reject(error);
           }
-        }
-      ]).toArray()
+          resolve(results);
+        });
+    });
+
   }
 
   /**
    *
-   * @param {Object} param
+   * @param {String} user - from session
+   * @param {Object} param - id of link
    * @returns {Promise<any>}
    */
   getLinkByParam(param) {

@@ -1,6 +1,7 @@
 "use strict";
 
 const authRouters = require("./auth");
+const api = require("./api");
 const linkRoutes = require("./links");
 const userRoutes = require("./users");
 const {authenticated} = require("../auth");
@@ -27,5 +28,6 @@ router.get("/check-auth", authenticated(), async ctx => {
 });
 router.use(linkRoutes.routes());
 router.use(userRoutes.routes());
+router.use(api.routes());
 
 module.exports = router;
