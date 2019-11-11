@@ -30,7 +30,7 @@ export default function Login() {
           const response = await handleLogin(validValues);
           const isError = response instanceof Error;
           if (isError) {
-            setErrors({authorization: "Authorization was failed!"});
+            setErrors({authorization: "Authorization was failed! Something was wrong!"});
             setIsLoading(false)
           }
         })();

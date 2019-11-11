@@ -34,7 +34,7 @@ export default function Registration() {
           const response = await registration(validValues);
           const isError = response instanceof Error;
           if (isError) {
-            setErrors({registration: "Registration was failed!"});
+            setErrors({registration: "Registration was failed! Something was wrong!"});
             setIsLoading(false)
           }
         })();
