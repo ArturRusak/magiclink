@@ -23,8 +23,18 @@ export function handleLogOut(callback) {
     .catch(error => error);
 }
 
+/**
+ * Query for checking isAuthorized user
+ * @returns {Promise<AxiosResponse<T>>}
+ */
 export async function checkAuth() {
   return axios.get('/check-auth')
     .then(response => response)
     .catch(error => error)
+}
+
+export async function registration(data) {
+  return axios.post(`/registration`, {...data})
+    .then(response => response.data)
+    .catch(error => error);
 }

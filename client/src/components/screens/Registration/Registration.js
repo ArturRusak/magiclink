@@ -1,36 +1,53 @@
 import React, { useState } from "react";
-import { handleLogin } from "../../../services/api";
-
 import { NavLink } from "react-router-dom";
+import { StyledInputError } from "../../common/Styled";
+
 import { Input, SIZE } from "baseui/input";
 import { Button, KIND } from "baseui/button";
 import { Block } from "baseui/block";
+
+import { registration } from "../../../services/api";
+import { validateRegistration } from "../../../services/validation"
 import { useInput } from "../../../utils/hooks";
+import { errorsToObj } from "../../../utils/mapper"
 
 export default function Registration() {
 
   const defaultState = {
-    login: "",
+    nickName: "",
+    userName: "",
     email: "",
     password: "",
     confirmPassword: ""
   };
   const {inputValues, setInputValues} = useInput(defaultState);
-  const {login, email, password, confirmPassword} = inputValues;
+  const {nickName, userName, email, password, confirmPassword} = inputValues;
   const [isLoading, setIsLoading] = useState(false);
-  const [isErrorLogin, setIsErrorLogin] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    (async () => {
-      const response = await handleLogin({login, password});
-      const isError = response instanceof Error;
-      if (isError) {
-        setIsErrorLogin(true);
-        setIsLoading(false)
-      }
-    })();
+
+    validateRegistration(inputValues)
+      .then(validValues => {
+        (async () => {
+          const response = await registration(validValues);
+          const isError = response instanceof Error;
+          if (isError) {
+            setIsLoading(false)
+          }
+        })();
+      })
+      .catch(errors => {
+        const errorsList = errors.inner;
+        if (errorsList.length) {
+          const errorsMap = errorsToObj(errorsList);
+          setErrors(errorsMap);
+        }
+        setIsLoading(false);
+      });
+
   };
 
   return (
@@ -38,18 +55,31 @@ export default function Registration() {
       <Block maxWidth={"40em"} margin={"2em auto 0"}>
         <Block marginBottom={"1em"}>
           <Input
-            error={isErrorLogin}
+            error={errors.nickName}
             type={"text"}
             size={SIZE.compact}
-            placeholder={"Login"}
-            name={"login"}
+            placeholder={"Nick name"}
+            name={"nickName"}
             onChange={event => setInputValues(event)}
-            value={login}
+            value={nickName}
           />
+          {errors.nickName && <StyledInputError>{errors.nickName}</StyledInputError>}
         </Block>
         <Block marginBottom={"1em"}>
           <Input
-            error={isErrorLogin}
+            error={errors.userName}
+            type={"text"}
+            size={SIZE.compact}
+            placeholder={"Name"}
+            name={"userName"}
+            onChange={event => setInputValues(event)}
+            value={userName}
+          />
+          {errors.userName && <StyledInputError>{errors.userName}</StyledInputError>}
+        </Block>
+        <Block marginBottom={"1em"}>
+          <Input
+            error={errors.email}
             type={"email"}
             size={SIZE.compact}
             placeholder={"email"}
@@ -57,10 +87,11 @@ export default function Registration() {
             onChange={event => setInputValues(event)}
             value={email}
           />
+          {errors.email && <StyledInputError>{errors.email}</StyledInputError>}
         </Block>
         <Block marginBottom={"1.5em"}>
           <Input
-            error={isErrorLogin}
+            error={errors.password}
             type={"password"}
             size={SIZE.compact}
             placeholder={"Password"}
@@ -68,9 +99,11 @@ export default function Registration() {
             onChange={event => setInputValues(event)}
             value={password}
           />
-        </Block> <Block marginBottom={"1.5em"}>
+          {errors.password && <StyledInputError>{errors.password}</StyledInputError>}
+        </Block>
+        <Block marginBottom={"1.5em"}>
         <Input
-          error={isErrorLogin}
+          error={errors.confirmPassword}
           type={"password"}
           size={SIZE.compact}
           placeholder={"Confirm password"}
@@ -78,6 +111,7 @@ export default function Registration() {
           onChange={event => setInputValues(event)}
           value={confirmPassword}
         />
+          {errors.confirmPassword && <StyledInputError>{errors.confirmPassword}</StyledInputError>}
       </Block>
         <Button
           kind={KIND.secondary}

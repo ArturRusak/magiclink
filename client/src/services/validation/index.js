@@ -1,0 +1,1 @@
+export { default as validateRegistration } from "./registration";
