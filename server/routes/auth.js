@@ -2,7 +2,7 @@
 
 const Router = require("koa-router");
 const passport = require("koa-passport");
-const {saveUser} = require("../controllers").auth;
+§const {saveUser} = require("../controllers").users;
 
 const router = new Router();
 

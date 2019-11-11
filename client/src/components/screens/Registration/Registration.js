@@ -20,7 +20,7 @@ export default function Registration() {
     password: "",
     confirmPassword: ""
   };
-  const {inputValues, setInputValues} = useInput(defaultState);
+  const {inputValues, setInputValues, reset} = useInput(defaultState);
   const {nickName, userName, email, password, confirmPassword} = inputValues;
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -35,8 +35,9 @@ export default function Registration() {
           const isError = response instanceof Error;
           if (isError) {
             setErrors({registration: "Registration was failed! Something was wrong!"});
-            setIsLoading(false)
           }
+          setIsLoading(false);
+          reset();
         })();
       })
       .catch(errors => {
