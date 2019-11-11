@@ -15,6 +15,6 @@ export const settingsAPI = {
 };
 
 export const listContent = {
-  tableTitles: ["N", "hash", "link"]
+  tableTitles: ["N", "short link", "link"]
 
 };
