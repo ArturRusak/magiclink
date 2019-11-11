@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../../index";
+import { AuthContext } from "../index";
 
-import { Home, LinkInfo, LinksList, Login, Registration } from "../../index";
+import { Home, LinkInfo, LinksList, Login, Registration } from "../index";
 
 import { styled } from "baseui";
 import { Switch, Route, Redirect } from "react-router-dom";

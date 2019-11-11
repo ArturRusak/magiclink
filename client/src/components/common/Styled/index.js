@@ -6,3 +6,10 @@ export const StyledInputError = styled("div", ({$theme}) => ({
   color: $theme.colors.negative,
   textAlign: "left"
 }));
+
+export const StyledFormError = styled("div", ({$theme}) => ({
+  ...$theme.typography.font500,
+  marginBottom: '1em',
+  color: $theme.colors.negative,
+  textAlign: "center"
+}));

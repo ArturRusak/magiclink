@@ -42,9 +42,6 @@ export default function Navigation() {
             <StyledNavLink to="/links">Links</StyledNavLink>
           </StyledNavItem>
           <StyledNavItem>
-            <StyledNavLink to="/registration">Registration</StyledNavLink>
-          </StyledNavItem>
-          <StyledNavItem>
             {isAuthenticated ? (
               <StyledNavLink $as={"div"} onClick={() => handleLogOut(logOut)} role={"button"}>
                 Sign out
