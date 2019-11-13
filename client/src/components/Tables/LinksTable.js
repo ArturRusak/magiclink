@@ -9,25 +9,25 @@ import {
 } from "baseui/table";
 import {withStyle} from "styletron-react";
 import {styled} from "baseui";
-import {Link} from "react-router-dom";
+
+const CustomCell = withStyle(StyledCell, {
+  maxWith: "100%",
+  overflow: "hidden"
+});
 
 const CustomRow = withStyle(StyledRow, ({$theme}) => ({
   position: "relative",
   ":hover": {
-    background: $theme.colors.primary50,
-    cursor: "pointer"
+    background: $theme.colors.primary50
   }
 }));
 
-const RowLink = styled(Link, {
-  position: "absolute",
-  width: "100%",
-  height: "100%"
-});
-
 const CellLink = styled("a", {
-  zIndex: "1",
-  position: "relative"
+  position: "relative",
+  maxWith: "100%",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  overflow: "hidden"
 });
 
 function LinksTable({headTitles, bodyRowsData}) {
@@ -41,18 +41,17 @@ function LinksTable({headTitles, bodyRowsData}) {
       <StyledBody>
         {bodyRowsData.map((item, index) => (
           <CustomRow key={`${item._id}-row`}>
-            <RowLink className={"link-info"} to={`/links/${item._id}`}/>
             <StyledCell>{index + 1}</StyledCell>
-            <StyledCell>
+            <CustomCell>
               <CellLink href={item.shortLink} target="_blank" title={item.shortLink}>
                 {item.shortLink}
               </CellLink>
-            </StyledCell>
-            <StyledCell>
+            </CustomCell>
+            <CustomCell>
               <CellLink href={item.link} title={item.link}>
                 {item.link}
               </CellLink>
-            </StyledCell>
+            </CustomCell>
           </CustomRow>
         ))}
       </StyledBody>

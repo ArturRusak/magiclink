@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../index";
 
-import { Home, LinkInfo, LinksList, Login, Registration } from "../index";
+import { Home, LinksList, Login, Registration } from "../index";
 
 import { styled } from "baseui";
 import { Switch, Route, Redirect } from "react-router-dom";
@@ -21,7 +21,6 @@ export default function() {
       <Switch>
         <Route exact path="/" component={Home}/>
         <Route exact path="/links" component={LinksList}/>
-        <Route path="/links/:linkId" component={LinkInfo}/>
         <Route path="/registration" component={Registration}/>
         <Route exact path="/login">
           {isAuthenticated ? <Redirect to={"/links"}/> : <Login/>}
