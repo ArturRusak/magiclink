@@ -26,14 +26,19 @@ export default function () {
 
       axios.interceptors.response.use(
         response => {
-          console.log(response.data)
           // TODO optimization of renderers, need depending in memo for one variable
+          if (!response.data.currentUser) {
+            setIsAuthenticated(false);
+            setCurrentUser(null);
+            return response;
+          }
           setIsAuthenticated(true);
           setCurrentUser(response.data.currentUser);
           return response;
         },
         error => {
-          if (error.response.status === 401) {
+          const {response} = error;
+          if (response.status === 401 || response.data.currentUser) {
             setIsAuthenticated(false);
             setCurrentUser(null);
           }

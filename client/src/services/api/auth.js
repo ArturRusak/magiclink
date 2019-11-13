@@ -2,7 +2,7 @@ import axios from "axios";
 
 export function handleLogin({login, password}) {
   return axios.post(`/login`, {
-    username: login,
+    userName: login,
     password
   })
     .then(response => response.data)

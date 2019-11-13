@@ -20,16 +20,16 @@ const linksList = [
 
 const users = [
   {
-    username: "user1",
+    userName: "user1",
     password: "user1"
   },
   {
-    username: "user2",
+    userName: "user2",
     password: "user2"
   },
 
   {
-    username: "user3",
+    userName: "user3",
     password: "user3"
   }
 ];

@@ -14,14 +14,13 @@ import { errorsToObj } from "../../../utils/mapper"
 export default function Registration() {
 
   const defaultState = {
-    nickName: "",
     userName: "",
     email: "",
     password: "",
     confirmPassword: ""
   };
   const {inputValues, setInputValues, reset} = useInput(defaultState);
-  const {nickName, userName, email, password, confirmPassword} = inputValues;
+  const {userName, email, password, confirmPassword} = inputValues;
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -31,11 +30,26 @@ export default function Registration() {
     validate.registration(inputValues)
       .then(validValues => {
         (async () => {
+
           const response = await registration(validValues);
           const isError = response instanceof Error;
-          if (isError) {
-            setErrors({registration: "Registration was failed! Something was wrong!"});
+
+          if (response.status === "error") {
+            setErrors({
+              registration: response.data || "Registration was failed! Something was wrong!"
+            });
+            setIsLoading(false);
+            return;
           }
+
+          if (isError) {
+            setErrors({
+              registration: "Registration was failed! Something was wrong!"
+            });
+            setIsLoading(false);
+            return;
+          }
+
           setIsLoading(false);
           reset();
         })();
@@ -54,18 +68,6 @@ export default function Registration() {
   return (
     <React.Fragment>
       <Block maxWidth={"40em"} margin={"2em auto 0"}>
-        <Block marginBottom={"1em"}>
-          <Input
-            error={errors.nickName}
-            type={"text"}
-            size={SIZE.compact}
-            placeholder={"Nick name"}
-            name={"nickName"}
-            onChange={event => setInputValues(event)}
-            value={nickName}
-          />
-          {errors.nickName && <StyledInputError>{errors.nickName}</StyledInputError>}
-        </Block>
         <Block marginBottom={"1em"}>
           <Input
             error={errors.userName}

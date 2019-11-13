@@ -28,16 +28,16 @@ function findUserByID(id) {
  * @returns {Promise<any>}
  */
 function findUser(param) {
-  return usersModel.findUser({username: param});
+  return usersModel.findUser({userName: param});
 }
 
 /**
  *
- * @param {String} nick - unique value of user data
+ * @param {String} userName - unique value of user data
  * @returns {Promise<any>}
  */
-function findUserByNickName(nick) {
-  return usersModel.checkUser({username: nick});
+function findUserByNickName(userName) {
+  return usersModel.checkUser({userName});
 }
 
 /**
@@ -47,10 +47,10 @@ function findUserByNickName(nick) {
  */
 function saveUser(user) {
   let {password} = user;
-  const {username} = user;
+  const {userName} = user;
 
   return usersModel
-    .checkUser({username})
+    .checkUser({userName})
     .then(foundUser => {
       if (!foundUser) {
         const salt = bcrypt.genSaltSync(10);
