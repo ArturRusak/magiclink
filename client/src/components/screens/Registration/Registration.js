@@ -78,7 +78,9 @@ export default function Registration() {
             onChange={event => setInputValues(event)}
             value={userName}
           />
-          {errors.userName && <StyledInputError>{errors.userName}</StyledInputError>}
+          {errors.userName && (
+            <StyledInputError>{errors.userName}</StyledInputError>
+          )}
         </Block>
         <Block marginBottom={"1em"}>
           <Input
@@ -102,7 +104,9 @@ export default function Registration() {
             onChange={event => setInputValues(event)}
             value={password}
           />
-          {errors.password && <StyledInputError>{errors.password}</StyledInputError>}
+          {errors.password && (
+            <StyledInputError>{errors.password}</StyledInputError>
+          )}
         </Block>
         <Block marginBottom={"1.5em"}>
           <Input
@@ -114,9 +118,13 @@ export default function Registration() {
             onChange={event => setInputValues(event)}
             value={confirmPassword}
           />
-          {errors.confirmPassword && <StyledInputError>{errors.confirmPassword}</StyledInputError>}
+          {errors.confirmPassword && (
+            <StyledInputError>{errors.confirmPassword}</StyledInputError>
+          )}
         </Block>
-        {errors.registration && <StyledFormError>{errors.registration}</StyledFormError>}
+        {errors.registration && (
+          <StyledFormError>{errors.registration}</StyledFormError>
+        )}
         <Button
           kind={KIND.secondary}
           type={"submit"}
@@ -132,9 +140,7 @@ export default function Registration() {
         >
           Registration
         </Button>
-        <NavLink to="/login">
-          Sign in
-        </NavLink>
+        <NavLink to="/login">Sign in</NavLink>
       </Block>
     </React.Fragment>
   );
