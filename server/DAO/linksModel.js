@@ -22,7 +22,6 @@ class LinksModel extends BaseModel {
           resolve(results);
         });
     });
-
   }
 
   /**

@@ -7,8 +7,8 @@ const {saveUser} = require("../controllers").users;
 const router = new Router();
 
 router
-  .post('/login', async (ctx) => {
-    return passport.authenticate('local', (error, user, info) => {
+  .post("/login", async ctx => {
+    return passport.authenticate("local", (error, user, info) => {
       if (!user) {
         ctx.body = {
           ...info,

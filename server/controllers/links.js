@@ -1,6 +1,6 @@
 const {linksModel} = require("../DAO");
 const {linksAPI} = require("../constants");
-const md5 = require("md5");
+const shortid = require("shortid");
 
 /**
  *
@@ -18,7 +18,7 @@ function getLinks(user) {
  * @returns {Promise<any>}
  */
 function getUsersLinkByParam(user, param) {
-  return linksModel.getLinkByParam({userID: user, ...param})
+  return linksModel.getLinkByParam({userID: user, ...param});
 }
 
 /**
@@ -28,7 +28,7 @@ function getUsersLinkByParam(user, param) {
  */
 function getLinkByHash(hash) {
   const shortLink = `${linksAPI}${hash}`;
-  return linksModel.getLinkByParam({shortLink})
+  return linksModel.getLinkByParam({shortLink});
 }
 
 /**
@@ -38,15 +38,14 @@ function getLinkByHash(hash) {
  */
 function addLink(user, {link}) {
   //before of saving search the same link and hash
-  return getUsersLinkByParam(user, {link})
-    .then(checkedLink => { // TODO check the hash for users.
+  return getUsersLinkByParam(user, {link}).then(checkedLink => {
+    // TODO check the hash for users.
     if (!checkedLink) {
-      const shortLink = `${linksAPI}${md5(link)}`;
+      const shortLink = `${linksAPI}${shortid.generate()}`;
       return linksModel.addLink({link, shortLink, userID: user});
     } else {
       return Promise.reject("The link already saved!");
     }
-
   });
 }
 

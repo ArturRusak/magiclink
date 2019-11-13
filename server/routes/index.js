@@ -24,7 +24,7 @@ router.use(async (ctx, next) => {
 router.get("/check-auth", authenticated(), async ctx => {
   ctx.body = {
     ...ctx.body
-  }
+  };
 });
 router.use(linkRoutes.routes());
 router.use(userRoutes.routes());

@@ -3,7 +3,12 @@
 const Router = require("koa-router");
 const ObjectId = require("mongodb").ObjectId;
 const {authenticated} = require("../auth");
-const {getLinks, getUsersLinkByParam, getLinkByHash, addLink} = require("../controllers").links;
+const {
+  getLinks,
+  getUsersLinkByParam,
+  getLinkByHash,
+  addLink
+} = require("../controllers").links;
 
 const router = new Router();
 
@@ -12,7 +17,7 @@ router
     const hash = ctx.params.hash;
     await getLinkByHash(hash)
       .then(({link}) => {
-        ctx.redirect(link)
+        ctx.redirect(link);
       })
       .catch(error => {
         ctx.body = {

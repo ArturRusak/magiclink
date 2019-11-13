@@ -73,7 +73,7 @@ export default function Registration() {
             error={errors.userName}
             type={"text"}
             size={SIZE.compact}
-            placeholder={"Name"}
+            placeholder={"Login"}
             name={"userName"}
             onChange={event => setInputValues(event)}
             value={userName}
