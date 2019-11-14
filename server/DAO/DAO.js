@@ -101,11 +101,7 @@ class DAO {
           {
             collectionName,
             dataList
-          },
-          () =>
-            console.log(
-              `------${collectionName.toUpperCase()}----- was updated with success`
-            )
+          }
         ); // eslint-disable-line no-console
     });
   }

@@ -54,7 +54,6 @@ export default function () {
     },
     [isAuthenticated, currentUser]
   );
-  console.log("render");
   return (
     <BrowserRouter>
       <App className="App">

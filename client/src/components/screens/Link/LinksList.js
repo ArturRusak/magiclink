@@ -16,7 +16,6 @@ function LinksList() {
   const [listLinks, setListLinks] = useState([]);
   const [status, setStatus] = useState(null);
   const [isErrors, setIsErrors] = useState({
-    isInputError: false,
     isLoadingError: false
   });
 
@@ -63,16 +62,7 @@ function LinksList() {
     })();
   }
 
-  function handleSubmit(e, inputValues, reset) {
-    e.preventDefault();
-
-    if (!inputValues.linkInput.length) {
-      return setIsErrors(prevState => ({
-        ...prevState,
-        isInputError: true
-      }));
-    }
-
+  function handleSubmit(inputValues, reset) {
     (async function () {
       const responseBody = await saveLink(inputValues.linkInput);
       const isError = responseBody instanceof Error;
@@ -151,7 +141,6 @@ function LinksList() {
             {isAuthenticated ? (
               <React.Fragment>
                 <LinkInput
-                  isError={isErrors.isInputError}
                   onSubmit={handleSubmit}
                 />
                 <LinksTable
