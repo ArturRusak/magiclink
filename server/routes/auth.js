@@ -48,7 +48,9 @@ router
         ctx.body = {
           ...ctx.body,
           status: "error",
-          data: error
+          data: {
+            message: error
+          }
         };
       });
   });

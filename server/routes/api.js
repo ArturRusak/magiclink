@@ -15,7 +15,9 @@ router.get("/api/:hash", async ctx => {
       ctx.body = {
         ...ctx.body,
         status: "error",
-        data: error
+        data: {
+          message: error
+        }
       };
     });
 });

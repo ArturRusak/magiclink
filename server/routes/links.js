@@ -7,7 +7,8 @@ const {
   getLinks,
   getUsersLinkByParam,
   getLinkByHash,
-  addLink
+  addLink,
+  removeLink
 } = require("../controllers").links;
 
 const router = new Router();
@@ -23,7 +24,9 @@ router
         ctx.body = {
           ...ctx.body,
           status: "error",
-          data: error
+          data: {
+            message: error
+          }
         };
       });
   })
@@ -42,7 +45,9 @@ router
         ctx.body = {
           ...ctx.body,
           status: "error",
-          data: error
+          data: {
+            message: error
+          }
         };
       });
   })
@@ -63,7 +68,9 @@ router
         ctx.body = {
           ...ctx.body,
           status: "error",
-          data: error
+          data: {
+            message: error
+          }
         };
       });
   })
@@ -84,7 +91,28 @@ router
         ctx.body = {
           ...ctx.body,
           status: "error",
-          data: error
+          data: {
+            message: error
+          }
+        };
+      });
+  })
+  .delete("/links/:id", authenticated(), async ctx => {
+    await removeLink(ctx.params.id)
+      .then(link => {
+        ctx.body = {
+          ...ctx.body,
+          status: "success",
+          data: link
+        };
+      })
+      .catch(error => {
+        ctx.body = {
+          ...ctx.body,
+          status: "error",
+          data: {
+            message: error
+          }
         };
       });
   });

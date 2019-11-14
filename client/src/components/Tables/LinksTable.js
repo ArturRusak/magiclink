@@ -7,13 +7,14 @@ import {
   StyledRow,
   StyledTable
 } from "baseui/table";
+import { Button, SIZE } from "baseui/button";
 import {withStyle} from "styletron-react";
 import {styled} from "baseui";
 
-const CustomCell = withStyle(StyledCell, {
+const CustomCell = withStyle(StyledCell, ({$width}) => ({
   maxWith: "100%",
   overflow: "hidden"
-});
+}));
 
 const CustomRow = withStyle(StyledRow, ({$theme}) => ({
   position: "relative",
@@ -30,7 +31,7 @@ const CellLink = styled("a", {
   overflow: "hidden"
 });
 
-function LinksTable({headTitles, bodyRowsData}) {
+function LinksTable({headTitles, bodyRowsData, onLinkDelete}) {
   return (
     <StyledTable>
       <StyledHead>
@@ -52,6 +53,11 @@ function LinksTable({headTitles, bodyRowsData}) {
                 {item.link}
               </CellLink>
             </CustomCell>
+            <StyledCell>
+              <Button title="delete" size={SIZE.compact} onClick={(e) => onLinkDelete(e, item)}>
+                Delete link
+              </Button>
+            </StyledCell>
           </CustomRow>
         ))}
       </StyledBody>

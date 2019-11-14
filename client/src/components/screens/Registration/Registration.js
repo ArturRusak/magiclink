@@ -36,7 +36,7 @@ export default function Registration() {
 
           if (response.status === "error") {
             setErrors({
-              registration: response.data || "Registration was failed! Something was wrong!"
+              registration: response.data.message || "Registration was failed! Something was wrong!"
             });
             setIsLoading(false);
             return;

@@ -1,16 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext, LinksTable } from "../../";
+import { AuthContext, LinksTable, LinkInput } from "../../";
 
-import { useInput } from "../../../utils/hooks";
 import { KIND, Toast } from "baseui/toast";
-import { getLinks, saveLink } from "../../../services/api";
+import { getLinks, removeLink, saveLink } from "../../../services/api";
 
 import { listContent } from "../../../constants";
 
 import { Spinner } from "baseui/spinner";
 import { Block } from "baseui/block";
-import { Button } from "baseui/button";
-import { Input, SIZE } from "baseui/input";
 import { H2 } from "baseui/typography";
 
 function LinksList() {
@@ -22,15 +19,51 @@ function LinksList() {
     isInputError: false,
     isLoadingError: false
   });
-  const {inputValues, reset, setInputValues: onChange} = useInput(
-    {
-      linkInput: ""
-    }
-  );
 
   const {tableTitles} = listContent;
 
-  function handleSubmit(e) {
+  function handleErrorStatus(isError, responseBody) {
+    const statusMessage = isError ? responseBody.toString() : `Error: ${responseBody.data.message}`;
+    setStatus(statusMessage);
+    setIsErrors(prevState => ({
+      ...prevState,
+      isLoadingError: true
+    }));
+  }
+
+  function handleLinkDelete(e, item) {
+    e.preventDefault();
+
+    (async function () {
+      const responseBody = await removeLink(item._id);
+      const isError = responseBody instanceof Error;
+      const {data} = responseBody;
+
+      if ((responseBody.status && responseBody.status === "error") || isError) {
+        handleErrorStatus(isError, responseBody);
+        return;
+      }
+
+      if (data.deletedCount === 0) {
+        setListLinks(prevState => [...prevState, data]);
+        setStatus(`THE LINK NOT FOUND!`);
+        setIsErrors(prevState => ({
+          ...prevState,
+          isLoadingError: false
+        }));
+        return;
+      }
+
+      setListLinks(listLinks.filter(link => link._id !== item._id));
+      setStatus(`Link was removed ${item._id}`);
+      setIsErrors(prevState => ({
+        ...prevState,
+        isLoadingError: false
+      }));
+    })();
+  }
+
+  function handleSubmit(e, inputValues, reset) {
     e.preventDefault();
 
     if (!inputValues.linkInput.length) {
@@ -44,25 +77,13 @@ function LinksList() {
       const responseBody = await saveLink(inputValues.linkInput);
       const isError = responseBody instanceof Error;
 
-      if (isError) {
-        setStatus(responseBody.toString());
-        setIsErrors(prevState => ({
-          ...prevState,
-          isLoadingError: true
-        }));
+      if ((responseBody.status && responseBody.status === "error") || isError) {
+        handleErrorStatus(isError, responseBody);
         return;
       }
 
       const {data, status} = responseBody;
 
-      if (typeof data === "string") {
-        setStatus(`Error: ${data}`);
-        setIsErrors(prevState => ({
-          ...prevState,
-          isLoadingError: true
-        }));
-        return;
-      }
       setListLinks(prevState => [...prevState, data]);
       setStatus(status);
       setIsErrors(prevState => ({
@@ -115,6 +136,7 @@ function LinksList() {
               overrides={{
                 Body: {
                   style: {
+                    zIndex: 999,
                     position: "fixed",
                     bottom: "2em",
                     right: "2em"
@@ -128,31 +150,19 @@ function LinksList() {
           <Block margin={"1.5em 0"}>
             {isAuthenticated ? (
               <React.Fragment>
-                <Block
-                  display={"flex"}
-                  maxWidth={"35em"}
-                  padding={"0.3em"}
-                  margin={"1.5em auto"}
-                  backgroundColor={"#dadada"}
-                >
-                  <Input
-                    error={isErrors.isInputError}
-                    type={"text"}
-                    size={SIZE.large}
-                    placeholder={"Input link"}
-                    name={"linkInput"}
-                    onChange={event => onChange(event)}
-                    value={inputValues.linkInput}
-                  />
-                  <Button onClick={e => handleSubmit(e)} type={"submit"}>
-                    Save
-                  </Button>
-                </Block>
-                <LinksTable headTitles={tableTitles} bodyRowsData={listLinks}/>
+                <LinkInput
+                  isError={isErrors.isInputError}
+                  onSubmit={handleSubmit}
+                />
+                <LinksTable
+                  headTitles={tableTitles}
+                  bodyRowsData={listLinks}
+                  onLinkDelete={handleLinkDelete}
+                />
               </React.Fragment>
             ) : (
               <Block>
-                <H2>Not autorized!</H2>
+                <H2>Not authorized!</H2>
               </Block>
             )}
           </Block>

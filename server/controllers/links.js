@@ -1,3 +1,4 @@
+const ObjectId = require("mongodb").ObjectId;
 const {linksModel} = require("../DAO");
 const {linksAPI} = require("../constants");
 const shortid = require("shortid");
@@ -23,6 +24,16 @@ function getUsersLinkByParam(user, param) {
 
 /**
  *
+ * @param {String} id - id of link
+ * @returns {Promise<any>}
+ */
+function removeLink(id) {
+  const _id = new ObjectId(id);
+  return linksModel.removeLink({_id});
+}
+
+/**
+ *
  * @param {Object} hash - hash of link
  * @returns {Promise<any>}
  */
@@ -32,7 +43,7 @@ function getLinkByHash(hash) {
 }
 
 /**
- *
+ * @param {String} user - userName
  * @param {Object} link
  * @returns {Promise<any>}
  */
@@ -53,5 +64,6 @@ module.exports = {
   addLink,
   getLinks,
   getUsersLinkByParam,
-  getLinkByHash
+  getLinkByHash,
+  removeLink
 };
