@@ -13,9 +13,14 @@ const signIn = yup.object().shape({
   password: yup.string().required('Password is required'),
 });
 
+const addLink = yup.object().shape({
+  linkInput: yup.string().url().required('Wrong link!'),
+});
+
 const validate = {
   registration: (formData) => registrationScheme.validate(formData, {abortEarly: false}),
-  signIn: (formData) => signIn.validate(formData, {abortEarly: false})
+  signIn: (formData) => signIn.validate(formData, {abortEarly: false}),
+  addLink: (formData) => addLink.validate(formData, {abortEarly: false}),
 };
 
 export default validate;

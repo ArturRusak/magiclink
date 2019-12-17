@@ -12,6 +12,12 @@ export function getLinkInfo(linkID) {
     .catch(error => error);
 }
 
+export function removeLink(linkID) {
+  return axios.delete(`/links/${linkID}`)
+    .then(response => response.data)
+    .catch(error => error);
+}
+
 export function saveLink(value) {
   return axios.post(`/links`, {
     link: value

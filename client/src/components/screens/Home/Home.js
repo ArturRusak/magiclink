@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect} from "react";
+import React, { useEffect } from "react";
 import { Block } from "baseui/block";
 
 import {checkAuth} from "../../../services/api";

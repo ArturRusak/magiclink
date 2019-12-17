@@ -17,7 +17,7 @@ export default function Login() {
     login: "",
     password: ""
   };
-  const {inputValues, setInputValues} = useInput(defaultState);
+  const {inputValues, setInputValues, reset} = useInput(defaultState);
   const {login, password} = inputValues;
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState(false);
@@ -29,10 +29,19 @@ export default function Login() {
         (async () => {
           const response = await handleLogin(validValues);
           const isError = response instanceof Error;
+
+          if (response.status === "error") {
+            setErrors({authorization: response.data});
+            setIsLoading(false);
+            return;
+          }
           if (isError) {
             setErrors({authorization: "Authorization was failed! Something was wrong!"});
-            setIsLoading(false)
+            setIsLoading(false);
+            return;
           }
+          setIsLoading(false);
+          reset();
         })();
       })
       .catch(errors => {

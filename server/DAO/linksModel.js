@@ -22,12 +22,10 @@ class LinksModel extends BaseModel {
           resolve(results);
         });
     });
-
   }
 
   /**
    *
-   * @param {String} user - from session
    * @param {Object} param - id of link
    * @returns {Promise<any>}
    */
@@ -39,6 +37,23 @@ class LinksModel extends BaseModel {
           reject(error);
         }
         resolve(result);
+      });
+    });
+  }
+
+  /**
+   *
+   * @param {Object} id
+   * @param {String} id._id - Id of link
+   */
+  removeLink(id) {
+    const {db, collectionName} = this;
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName).deleteOne(id, (error, result) => {
+        if (error) {
+          reject(error);
+        }
+        resolve({deletedCount: result.deletedCount});
       });
     });
   }

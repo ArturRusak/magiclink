@@ -2,16 +2,27 @@
 
 const Router = require("koa-router");
 const passport = require("koa-passport");
-const {saveUser} = require("../controllers").auth;
+const {saveUser} = require("../controllers").users;
 
 const router = new Router();
 
 router
-  .post(
-    "/login",
-    passport.authenticate("local"),
-    async ctx => (ctx.status = 200)
-  )
+  .post("/login", async ctx => {
+    return passport.authenticate("local", (error, user, info) => {
+      if (!user) {
+        ctx.body = {
+          ...info,
+          status: "error"
+        };
+      } else {
+        ctx.body = {
+          status: "success",
+          currentUser: user.userName
+        };
+        return ctx.login(user);
+      }
+    })(ctx);
+  })
   .get("/logout", async ctx => {
     if (ctx.isAuthenticated()) {
       ctx.logout();
@@ -37,7 +48,9 @@ router
         ctx.body = {
           ...ctx.body,
           status: "error",
-          data: error
+          data: {
+            message: error
+          }
         };
       });
   });

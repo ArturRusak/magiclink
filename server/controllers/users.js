@@ -1,5 +1,6 @@
 "use strict";
 
+const bcrypt = require("bcrypt");
 const ObjectId = require("mongodb").ObjectId;
 const { usersModel } = require("../DAO");
 
@@ -27,16 +28,16 @@ function findUserByID(id) {
  * @returns {Promise<any>}
  */
 function findUser(param) {
-  return usersModel.findUser({username: param});
+  return usersModel.findUser({userName: param});
 }
 
 /**
  *
- * @param {String} nick - unique value of user data
+ * @param {String} userName - unique value of user data
  * @returns {Promise<any>}
  */
-function findUserByNickName(nick) {
-  return usersModel.checkUser({username: nick});
+function findUserByNickName(userName) {
+  return usersModel.checkUser({userName});
 }
 
 /**
@@ -45,7 +46,23 @@ function findUserByNickName(nick) {
  * @returns {Promise<any>}
  */
 function saveUser(user) {
-  return usersModel.saveUser(user);
+  let {password} = user;
+  const {userName} = user;
+
+  return usersModel
+    .checkUser({userName})
+    .then(foundUser => {
+      if (!foundUser) {
+        const salt = bcrypt.genSaltSync(10);
+        const hashPassword = bcrypt.hashSync(password, salt);
+
+        return usersModel.saveUser({...user, password: hashPassword});
+      }
+      return Promise.reject("The user already exists!");
+    })
+    .catch(error => {
+      return Promise.reject(error);
+    });
 }
 
 module.exports = {

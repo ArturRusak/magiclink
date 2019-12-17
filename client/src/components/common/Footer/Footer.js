@@ -57,7 +57,7 @@ export default function() {
           <FooterLinkSpan>{NAME_PROJECT}</FooterLinkSpan>
         </FooterRouterLink>
         <FooterLink href={DEVELOPER.LINK} target={"_blank"}>
-          {DEVELOPER.TTITLE}
+          {DEVELOPER.TITLE}
         </FooterLink>
       </FooterContainer>
     </Footer>

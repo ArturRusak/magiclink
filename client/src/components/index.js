@@ -2,6 +2,7 @@ export { default as Header } from "./common/Header/Header";
 export { default as Footer } from "./common/Footer/Footer";
 export { default as Router } from "./Router/Router";
 export { default as Navigation } from "./common/Navigation/Navigation";
+export { default as LinkInput } from "./common/Inputs/LinkInput";
 
 export { default as LinksTable } from "./Tables/LinksTable";
 

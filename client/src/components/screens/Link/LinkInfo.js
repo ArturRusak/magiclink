@@ -1,3 +1,9 @@
+/*
+*
+* DISABLED COMPONENT
+*
+* */
+
 import React, { useEffect, useState } from "react";
 import { getLinkInfo } from "../../../services/api";
 import { Block } from "baseui/block";

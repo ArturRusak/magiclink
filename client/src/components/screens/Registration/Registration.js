@@ -14,14 +14,13 @@ import { errorsToObj } from "../../../utils/mapper"
 export default function Registration() {
 
   const defaultState = {
-    nickName: "",
     userName: "",
     email: "",
     password: "",
     confirmPassword: ""
   };
-  const {inputValues, setInputValues} = useInput(defaultState);
-  const {nickName, userName, email, password, confirmPassword} = inputValues;
+  const {inputValues, setInputValues, reset} = useInput(defaultState);
+  const {userName, email, password, confirmPassword} = inputValues;
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -31,12 +30,28 @@ export default function Registration() {
     validate.registration(inputValues)
       .then(validValues => {
         (async () => {
+
           const response = await registration(validValues);
           const isError = response instanceof Error;
-          if (isError) {
-            setErrors({registration: "Registration was failed! Something was wrong!"});
-            setIsLoading(false)
+
+          if (response.status === "error") {
+            setErrors({
+              registration: response.data.message || "Registration was failed! Something was wrong!"
+            });
+            setIsLoading(false);
+            return;
           }
+
+          if (isError) {
+            setErrors({
+              registration: "Registration was failed! Something was wrong!"
+            });
+            setIsLoading(false);
+            return;
+          }
+
+          setIsLoading(false);
+          reset();
         })();
       })
       .catch(errors => {
@@ -55,27 +70,17 @@ export default function Registration() {
       <Block maxWidth={"40em"} margin={"2em auto 0"}>
         <Block marginBottom={"1em"}>
           <Input
-            error={errors.nickName}
-            type={"text"}
-            size={SIZE.compact}
-            placeholder={"Nick name"}
-            name={"nickName"}
-            onChange={event => setInputValues(event)}
-            value={nickName}
-          />
-          {errors.nickName && <StyledInputError>{errors.nickName}</StyledInputError>}
-        </Block>
-        <Block marginBottom={"1em"}>
-          <Input
             error={errors.userName}
             type={"text"}
             size={SIZE.compact}
-            placeholder={"Name"}
+            placeholder={"Login"}
             name={"userName"}
             onChange={event => setInputValues(event)}
             value={userName}
           />
-          {errors.userName && <StyledInputError>{errors.userName}</StyledInputError>}
+          {errors.userName && (
+            <StyledInputError>{errors.userName}</StyledInputError>
+          )}
         </Block>
         <Block marginBottom={"1em"}>
           <Input
@@ -99,7 +104,9 @@ export default function Registration() {
             onChange={event => setInputValues(event)}
             value={password}
           />
-          {errors.password && <StyledInputError>{errors.password}</StyledInputError>}
+          {errors.password && (
+            <StyledInputError>{errors.password}</StyledInputError>
+          )}
         </Block>
         <Block marginBottom={"1.5em"}>
           <Input
@@ -111,9 +118,13 @@ export default function Registration() {
             onChange={event => setInputValues(event)}
             value={confirmPassword}
           />
-          {errors.confirmPassword && <StyledInputError>{errors.confirmPassword}</StyledInputError>}
+          {errors.confirmPassword && (
+            <StyledInputError>{errors.confirmPassword}</StyledInputError>
+          )}
         </Block>
-        {errors.registration && <StyledFormError>{errors.registration}</StyledFormError>}
+        {errors.registration && (
+          <StyledFormError>{errors.registration}</StyledFormError>
+        )}
         <Button
           kind={KIND.secondary}
           type={"submit"}
@@ -129,9 +140,7 @@ export default function Registration() {
         >
           Registration
         </Button>
-        <NavLink to="/login">
-          Sign in
-        </NavLink>
+        <NavLink to="/login">Sign in</NavLink>
       </Block>
     </React.Fragment>
   );

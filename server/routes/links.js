@@ -3,7 +3,13 @@
 const Router = require("koa-router");
 const ObjectId = require("mongodb").ObjectId;
 const {authenticated} = require("../auth");
-const {getLinks, getUsersLinkByParam, getLinkByHash, addLink} = require("../controllers").links;
+const {
+  getLinks,
+  getUsersLinkByParam,
+  getLinkByHash,
+  addLink,
+  removeLink
+} = require("../controllers").links;
 
 const router = new Router();
 
@@ -12,13 +18,15 @@ router
     const hash = ctx.params.hash;
     await getLinkByHash(hash)
       .then(({link}) => {
-        ctx.redirect(link)
+        ctx.redirect(link);
       })
       .catch(error => {
         ctx.body = {
           ...ctx.body,
           status: "error",
-          data: error
+          data: {
+            message: error
+          }
         };
       });
   })
@@ -37,7 +45,9 @@ router
         ctx.body = {
           ...ctx.body,
           status: "error",
-          data: error
+          data: {
+            message: error
+          }
         };
       });
   })
@@ -58,7 +68,9 @@ router
         ctx.body = {
           ...ctx.body,
           status: "error",
-          data: error
+          data: {
+            message: error
+          }
         };
       });
   })
@@ -79,7 +91,28 @@ router
         ctx.body = {
           ...ctx.body,
           status: "error",
-          data: error
+          data: {
+            message: error
+          }
+        };
+      });
+  })
+  .delete("/links/:id", authenticated(), async ctx => {
+    await removeLink(ctx.params.id)
+      .then(link => {
+        ctx.body = {
+          ...ctx.body,
+          status: "success",
+          data: link
+        };
+      })
+      .catch(error => {
+        ctx.body = {
+          ...ctx.body,
+          status: "error",
+          data: {
+            message: error
+          }
         };
       });
   });
