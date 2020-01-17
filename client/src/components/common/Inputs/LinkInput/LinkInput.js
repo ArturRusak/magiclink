@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Block } from "baseui/block";
 import { Input, SIZE } from "baseui/input";
 import { Button } from "baseui/button";
-import { useInput } from "../../../utils/hooks";
-import { StyledInputError } from "../Styled";
-import validate from "../../../services/validation"
-import { errorsToObj } from "../../../utils/mapper";
+
+import {StyledInputError} from "../../Styled";
+import {validate} from "../../../../services";
+import {useInput, errorsToObj} from "../../../../utils";
 
 const LinkInput = ({onSubmit}) => {
   const [validationError, setValidationError] = useState(false);
@@ -19,7 +19,7 @@ const LinkInput = ({onSubmit}) => {
     e.preventDefault();
     validate.addLink(inputValues)
       .then(validValues => {
-        onSubmit(inputValues, reset);
+        onSubmit(validValues, reset);
         setValidationError(false);
       })
       .catch(errors => {

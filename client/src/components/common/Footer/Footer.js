@@ -1,6 +1,7 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import { styled } from "baseui";
-import { Link } from "react-router-dom";
+
 import { commonContent } from "../../../constants";
 
 const Footer = styled("footer", ({ $theme }) => ({

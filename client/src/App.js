@@ -2,7 +2,10 @@ import React, { useMemo, useState } from "react";
 
 import { styled } from "baseui";
 import { BrowserRouter } from "react-router-dom";
-import { AuthProvider, Footer, Header, Router } from "./components";
+import AuthProvider from "../src/components/Providers/AuthProvider"
+import Header from "../src/components/common/Header";
+import Footer from "../src/components/common/Footer";
+import Router from "../src/components/Router";
 import axios from "axios";
 
 import "./App.css";

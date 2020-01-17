@@ -1,11 +1,10 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../..";
-import { handleLogOut } from "../../../services/api";
-
-import { styled } from "baseui";
-import { Block } from "baseui/block";
-
 import { NavLink } from "react-router-dom";
+import {Block} from "baseui/block";
+import {styled} from "baseui";
+
+import {AuthContext} from "../../Providers/AuthProvider";
+import {handleLogOut} from "../../../services";
 
 const StyledNav = styled("ul", {
   display: "flex",

@@ -4,10 +4,8 @@ import { Input, SIZE } from "baseui/input";
 import { Button, KIND } from "baseui/button";
 import { Block } from "baseui/block";
 
-import validate from "../../../services/validation"
-import { useInput } from "../../../utils/hooks";
-import { handleLogin } from "../../../services/api";
-import { errorsToObj } from "../../../utils/mapper";
+import {handleLogin, validate} from "../../../services";
+import {useInput, errorsToObj} from "../../../utils";
 import { StyledInputError, StyledFormError } from "../../common/Styled";
 
 

@@ -1,12 +1,14 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../index";
-
-import { Home, LinksList, Login, Registration } from "../index";
-
-import { styled } from "baseui";
 import { Switch, Route, Redirect } from "react-router-dom";
+import {styled} from "baseui";
 
-const Router = styled("div", () => ({
+import {AuthContext} from "../Providers/AuthProvider";
+import Home from '../screens/Home';
+import LinksList from '../screens/Link/LinksList';
+import Login from '../screens/Login';
+import Registration from '../screens/Registration';
+
+const SyledRouter = styled("div", () => ({
   flexGrow: "1",
   maxWidth: "1280px",
   width: "100%",
@@ -14,10 +16,10 @@ const Router = styled("div", () => ({
   margin: "0 auto"
 }));
 
-export default function() {
+export default function Router() {
   const { isAuthenticated } = useContext(AuthContext);
   return (
-    <Router>
+    <SyledRouter>
       <Switch>
         <Route exact path="/" component={Home}/>
         <Route exact path="/links" component={LinksList}/>
@@ -26,6 +28,6 @@ export default function() {
           {isAuthenticated ? <Redirect to={"/links"}/> : <Login/>}
         </Route>
       </Switch>
-    </Router>
+    </SyledRouter>
   );
 }

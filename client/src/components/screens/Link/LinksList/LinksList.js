@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext, LinksTable, LinkInput } from "../../";
-
-import { KIND, Toast } from "baseui/toast";
-import { getLinks, removeLink, saveLink } from "../../../services/api";
-
-import { listContent } from "../../../constants";
-
 import { Spinner } from "baseui/spinner";
 import { Block } from "baseui/block";
 import { H2 } from "baseui/typography";
+import {KIND, Toast} from "baseui/toast";
+
+import {listContent} from "../../../../constants";
+import {getLinks, removeLink, saveLink} from "../../../../services";
+
+import {AuthContext} from '../../../Providers/AuthProvider';
+import LinkInput from "../../../common/Inputs/LinkInput";
+import LinksTable from "../../../Tables/LinksTable";
 
 function LinksList() {
   const {isAuthenticated} = useContext(AuthContext);

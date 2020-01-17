@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../..";
+import {Link} from "react-router-dom";
 import { styled } from "baseui";
-import { Link } from "react-router-dom";
 
 import { commonContent } from "../../../constants";
-import { Navigation } from "../../index";
+import Navigation from "../Navigation";
+import {AuthContext} from "../../Providers/AuthProvider";
+
 
 const StyledHeader = styled("header", ({$theme}) => ({
   minHeight: "4em",

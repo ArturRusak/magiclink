@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { StyledInputError, StyledFormError } from "../../common/Styled";
-
 import { Input, SIZE } from "baseui/input";
 import { Button, KIND } from "baseui/button";
 import { Block } from "baseui/block";
 
-import validate from "../../../services/validation"
-import { registration } from "../../../services/api";
-import { useInput } from "../../../utils/hooks";
-import { errorsToObj } from "../../../utils/mapper"
+import {registration, validate} from "../../../services";
+import {errorsToObj, useInput} from "../../../utils"
+
+import {StyledInputError, StyledFormError} from "../../common/Styled";
 
 export default function Registration() {
 

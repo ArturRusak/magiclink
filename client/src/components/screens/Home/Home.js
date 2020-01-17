@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Block } from "baseui/block";
 
-import {checkAuth} from "../../../services/api";
+import {checkAuth} from "../../../services";
 
 export default function Home() {
   useEffect(() => {

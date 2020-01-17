@@ -4,12 +4,13 @@
 *
 * */
 
-import React, { useEffect, useState } from "react";
-import { getLinkInfo } from "../../../services/api";
-import { Block } from "baseui/block";
-import { StyledBody, StyledCell, StyledHead, StyledHeadCell, StyledRow, StyledTable } from "baseui/table";
-import { Spinner } from "baseui/spinner";
-import { KIND, Toast } from "baseui/toast";
+import React, {useEffect, useState} from "react";
+import {Block} from "baseui/block";
+import {StyledBody, StyledCell, StyledHead, StyledHeadCell, StyledRow, StyledTable} from "baseui/table";
+import {Spinner} from "baseui/spinner";
+import {KIND, Toast} from "baseui/toast";
+
+import {getLinkInfo} from "../../../../services";
 
 export default function LinkInfo({match}) {
   const linkID = match.params.linkId;
