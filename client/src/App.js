@@ -10,14 +10,14 @@ import axios from "axios";
 
 import "./App.css";
 
-const App = styled("div", () => ({
+const StyledApp = styled("div", () => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
   minHeight: "100vh"
 }));
 
-export default function () {
+export default function App() {
   // using the state in the component for except unnecessary renders
   // of providers children
 
@@ -59,13 +59,13 @@ export default function () {
   );
   return (
     <BrowserRouter>
-      <App className="App">
+      <StyledApp className="App">
         <AuthProvider value={memoValue}>
           <Header/>
           <Router/>
         </AuthProvider>
         <Footer/>
-      </App>
+      </StyledApp>
     </BrowserRouter>
   );
 }
